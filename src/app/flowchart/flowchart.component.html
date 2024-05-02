@@ -1,0 +1,11 @@
+<div
+  id="flowchartContainer"
+  style="width: 100%; height: 400px; position: relative"
+>
+  @for (widget of flowchartService.widgets; track widget) { @switch(widget.type)
+  { @case ('message') {
+  <app-message [data]="widget" (onRemove)="onRemove(widget)" />
+  } @case ('collect') {
+  <app-collect-data [data]="widget" (onRemove)="onRemove(widget)" />
+  } } }
+</div>

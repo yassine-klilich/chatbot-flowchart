@@ -1,0 +1,58 @@
+<div class="inline-flex flex-col justify-center">
+  <div
+    class="widget-item outline outline-1 outline-[#aaa] rounded-s inline-block w-[28rem] bg-white"
+  >
+    <div class="py-.6 px-1 bg-gray-200 text-s flex">
+      <span class="grow text-center">Collect data</span>
+      <button (click)="deleteWidget()">
+        <ng-icon name="lucideTrash2"></ng-icon>
+      </button>
+    </div>
+    <div class="flex flex-col gap-y-.8 p-1">
+      <textarea
+        class="rounded-xs border border-gray-300 focus:outline-blue-500 py-.2 px-.6"
+        [(ngModel)]="data.content"
+      ></textarea>
+    </div>
+  </div>
+  <div class="flex justify-center">
+    <button
+      (click)="isMenuOpen = !isMenuOpen"
+      type="button"
+      cdkOverlayOrigin
+      #trigger="cdkOverlayOrigin"
+    >
+      <svg
+        viewBox="0 0 32 32"
+        xmlns="http://www.w3.org/2000/svg"
+        width="2.4rem"
+        height="2.4rem"
+      >
+        <path
+          d="M16,29A13,13,0,1,1,29,16,13,13,0,0,1,16,29ZM16,5A11,11,0,1,0,27,16,11,11,0,0,0,16,5Z"
+        />
+        <path d="M16,23a1,1,0,0,1-1-1V10a1,1,0,0,1,2,0V22A1,1,0,0,1,16,23Z" />
+        <path d="M22,17H10a1,1,0,0,1,0-2H22a1,1,0,0,1,0,2Z" />
+        <rect fill="none" height="32" width="32" />
+      </svg>
+    </button>
+  </div>
+
+  <ng-template
+    cdkConnectedOverlay
+    [cdkConnectedOverlayOrigin]="trigger"
+    [cdkConnectedOverlayOpen]="isMenuOpen"
+    [cdkConnectedOverlayPositions]="[
+      {
+        originX: 'center',
+        originY: 'bottom',
+        overlayX: 'center',
+        overlayY: 'top'
+      }
+    ]"
+    (overlayOutsideClick)="isMenuOpen = false"
+    (detach)="isMenuOpen = false"
+  >
+    <app-flowchart-menu [menu]="menu" [parent]="this" />
+  </ng-template>
+</div>

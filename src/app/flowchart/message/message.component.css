@@ -1,0 +1,4 @@
+.widget-item.widget-item--focus {
+  outline-width: 0.2rem;
+  outline-color: theme("borderColor.blue.500");
+}

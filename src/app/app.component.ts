@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { FlowchartComponent } from './flowchart/flowchart.component';
+import { provideIcons } from '@ng-icons/core';
+import { lucideTrash2 } from '@ng-icons/lucide';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, FlowchartComponent],
+  viewProviders: [provideIcons({ lucideTrash2 })],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
-export class AppComponent {
-  title = 'chatbot-flowchart';
-}
+export class AppComponent {}
