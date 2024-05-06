@@ -18,13 +18,16 @@ export class FlowchartMenuComponent {
   @Input() parent!: any;
 
   _addWidget(menu: WidgetType) {
+    const { bottom, left } =
+      this.parent.host.nativeElement.getBoundingClientRect();
+
     this.flowchartService.addWidget({
       id: --_countID,
       type: menu,
       content: '',
       position: {
-        top: this.parent.data.position.top + 180,
-        left: this.parent.data.position.left,
+        top: bottom + 30,
+        left: left,
       },
       parentWidget: this.parent.data.id,
     });
