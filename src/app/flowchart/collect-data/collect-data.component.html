@@ -3,7 +3,7 @@
     class="widget-item outline outline-1 outline-[#aaa] rounded-s inline-block w-[28rem] bg-white"
   >
     <div class="py-.6 px-1 bg-gray-200 text-s flex">
-      <span class="grow text-center">Collect data</span>
+      <span class="grow text-center">{{ title || "data collection" }}</span>
       <button (click)="deleteWidget()">
         <ng-icon name="lucideTrash2"></ng-icon>
       </button>
@@ -13,6 +13,11 @@
         class="rounded-xs border border-gray-300 focus:outline-blue-500 py-.2 px-.6"
         [(ngModel)]="data.content"
       ></textarea>
+      <input
+        type="text"
+        [(ngModel)]="title"
+        class="rounded-xs border border-gray-300 focus:outline-blue-500 py-.2 px-.6"
+      />
     </div>
   </div>
   <div class="flex justify-center">
