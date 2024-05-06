@@ -40,6 +40,7 @@ export class MessageComponent {
   flowchart = inject(FlowchartComponent);
   flowchartService = inject(FlowchartService);
 
+  title: string = 'Welcome';
   isMenuOpen: boolean = false;
   connection?: Connection | null;
   menu: WidgetType[] = ['message', 'collect'];

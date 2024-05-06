@@ -19,8 +19,8 @@ export class FlowchartService {
     },
   ];
   instance!: BrowserJsPlumbInstance;
-  changes: Subject<MessageComponent> = new Subject();
-  remove: Subject<MessageComponent> = new Subject();
+  changes: Subject<any> = new Subject();
+  remove: Subject<any> = new Subject();
 
   addWidget(widget: Widget) {
     this.widgets.push(widget);
