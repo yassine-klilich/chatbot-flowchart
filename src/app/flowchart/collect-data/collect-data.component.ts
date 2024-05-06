@@ -6,27 +6,21 @@ import {
   Output,
   inject,
 } from '@angular/core';
-import { FlowchartComponent } from '../flowchart.component';
+import { FormsModule } from '@angular/forms';
+import { Connection } from '@jsplumb/browser-ui';
+import { NgIconComponent } from '@ng-icons/core';
 import {
   FlowchartService,
   Widget,
   WidgetType,
 } from '../../services/flowchart.service';
-import { Connection } from '@jsplumb/browser-ui';
-import { NgIconComponent } from '@ng-icons/core';
-import { FormsModule } from '@angular/forms';
-import { OverlayModule } from '@angular/cdk/overlay';
 import { FlowchartMenuComponent } from '../flowchart-menu/flowchart-menu.component';
+import { FlowchartComponent } from '../flowchart.component';
 
 @Component({
   selector: 'app-collect-data',
   standalone: true,
-  imports: [
-    NgIconComponent,
-    FormsModule,
-    OverlayModule,
-    FlowchartMenuComponent,
-  ],
+  imports: [NgIconComponent, FormsModule, FlowchartMenuComponent],
   templateUrl: './collect-data.component.html',
   styleUrl: './collect-data.component.css',
   host: {
@@ -47,15 +41,14 @@ export class CollectDataComponent {
   @Input() data!: Widget;
   @Output() onRemove = new EventEmitter<void>();
 
-  ngOnInit() {
-    this.flowchartService.changes.next(this);
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     this.flowchartService.instance.addEndpoint(this.host.nativeElement, {
       endpoint: 'Blank',
       connector: 'Flowchart',
     });
+    this.flowchartService.changes.next(this);
   }
 
   ngOnDestroy() {

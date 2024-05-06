@@ -21,12 +21,7 @@ import { FlowchartComponent } from '../flowchart.component';
 @Component({
   selector: 'app-message',
   standalone: true,
-  imports: [
-    OverlayModule,
-    NgIconComponent,
-    FormsModule,
-    FlowchartMenuComponent,
-  ],
+  imports: [NgIconComponent, FormsModule, FlowchartMenuComponent],
   templateUrl: './message.component.html',
   styleUrl: './message.component.css',
   host: {
@@ -47,15 +42,14 @@ export class MessageComponent {
   @Input() data!: Widget;
   @Output() onRemove = new EventEmitter<void>();
 
-  ngOnInit() {
-    this.flowchartService.changes.next(this);
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     this.flowchartService.instance.addEndpoint(this.host.nativeElement, {
       endpoint: 'Blank',
       connector: 'Flowchart',
     });
+    this.flowchartService.changes.next(this);
   }
 
   ngOnDestroy() {
