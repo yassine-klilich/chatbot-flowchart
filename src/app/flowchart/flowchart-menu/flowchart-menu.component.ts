@@ -1,13 +1,13 @@
 import { Component, Input, inject } from '@angular/core';
 import { FlowchartService, WidgetType } from '../../services/flowchart.service';
-import { MessageComponent } from '../message/message.component';
+import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 
 let _countID: number = 0;
 
 @Component({
   selector: 'app-flowchart-menu',
   standalone: true,
-  imports: [],
+  imports: [CdkMenu, CdkMenuItem, CdkMenuTrigger],
   templateUrl: './flowchart-menu.component.html',
   styleUrl: './flowchart-menu.component.css',
 })

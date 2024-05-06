@@ -1,15 +1,48 @@
-<div
-  role="menu"
-  class="flex flex-col gap-y-.4 bg-white rounded-s p-.4 w-[28rem] shadow-[0px_6px_13px_0px_#c3cdd1]"
->
-  @for (item of menu; track $index) {
+<div class="flex justify-center">
   <button
     type="button"
-    role="menuitem"
-    class="rounded-s hover:bg-blue-100 leading-normal py-.2"
-    (click)="_addWidget(item)"
+    [cdkMenuTriggerFor]="menuTemplate"
+    [cdkMenuPosition]="[
+      {
+        originX: 'center',
+        originY: 'bottom',
+        overlayX: 'center',
+        overlayY: 'top'
+      }
+    ]"
   >
-    {{ item }}
+    <svg
+      viewBox="0 0 32 32"
+      xmlns="http://www.w3.org/2000/svg"
+      width="2.4rem"
+      height="2.4rem"
+    >
+      <path
+        d="M16,29A13,13,0,1,1,29,16,13,13,0,0,1,16,29ZM16,5A11,11,0,1,0,27,16,11,11,0,0,0,16,5Z"
+      />
+      <path d="M16,23a1,1,0,0,1-1-1V10a1,1,0,0,1,2,0V22A1,1,0,0,1,16,23Z" />
+      <path d="M22,17H10a1,1,0,0,1,0-2H22a1,1,0,0,1,0,2Z" />
+      <rect fill="none" height="32" width="32" />
+    </svg>
   </button>
-  }
 </div>
+
+<ng-template #menuTemplate>
+  <div
+    role="menu"
+    class="flex flex-col gap-y-.4 bg-white rounded-s p-.4 w-[28rem] shadow-[0px_6px_13px_0px_#c3cdd1]"
+    cdkMenu
+  >
+    @for (item of menu; track $index) {
+    <button
+      cdkMenuItem
+      type="button"
+      role="menuitem"
+      class="rounded-s hover:bg-blue-100 leading-normal py-.2"
+      (click)="_addWidget(item)"
+    >
+      {{ item }}
+    </button>
+    }
+  </div>
+</ng-template>

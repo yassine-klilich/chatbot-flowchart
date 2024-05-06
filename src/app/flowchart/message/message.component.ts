@@ -41,7 +41,6 @@ export class MessageComponent {
   flowchartService = inject(FlowchartService);
 
   title: string = '';
-  isMenuOpen: boolean = false;
   connection?: Connection | null;
   menu: WidgetType[] = ['message', 'collect'];
 
