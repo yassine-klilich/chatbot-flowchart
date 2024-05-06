@@ -10,11 +10,35 @@
     </div>
     <div class="flex flex-col gap-y-.8 p-1">
       <textarea
+        placeholder="Type your message here."
         class="rounded-xs border border-gray-300 focus:outline-blue-500 py-.2 px-.6"
         [(ngModel)]="data.content"
       ></textarea>
+      <div class="relative">
+        <textarea
+          placeholder="Type your AI prompt."
+          class="rounded-xs border border-gray-300 focus:outline-blue-500 py-.2 px-.6 w-full"
+        ></textarea>
+        <ng-icon
+          name="lucideInfo"
+          class="absolute top-.6 right-.6 text-blue-600"
+          title="Type your AI prompt for the expected result how it should be."
+        ></ng-icon>
+      </div>
+      <div class="relative">
+        <textarea
+          placeholder="Invalid answer message."
+          class="rounded-xs border border-gray-300 focus:outline-blue-500 py-.2 px-.6 w-full"
+        ></textarea>
+        <ng-icon
+          name="lucideInfo"
+          class="absolute top-.6 right-.6 text-blue-600"
+          title="Type your message in case of an invalid answer."
+        ></ng-icon>
+      </div>
       <input
         type="text"
+        placeholder="Label"
         [(ngModel)]="title"
         class="rounded-xs border border-gray-300 focus:outline-blue-500 py-.2 px-.6"
       />
