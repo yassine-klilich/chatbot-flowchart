@@ -1,4 +1,3 @@
-import { OverlayModule } from '@angular/cdk/overlay';
 import {
   Component,
   ElementRef,
@@ -7,42 +6,39 @@ import {
   Output,
   inject,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { MessageComponent } from './message/message.component';
+import { CollectDataComponent } from './collect-data/collect-data.component';
+import { FlowchartService, Widget } from '../../services/flowchart.service';
 import { Connection } from '@jsplumb/browser-ui';
-import { NgIconComponent } from '@ng-icons/core';
-import {
-  FlowchartService,
-  Widget,
-  WidgetType,
-} from '../../services/flowchart.service';
 import { FlowchartMenuComponent } from '../flowchart-menu/flowchart-menu.component';
-import { FlowchartComponent } from '../flowchart.component';
+import { NgIconComponent } from '@ng-icons/core';
 
 @Component({
-  selector: 'app-message',
+  selector: 'app-widget',
   standalone: true,
-  imports: [NgIconComponent, FormsModule, FlowchartMenuComponent],
-  templateUrl: './message.component.html',
-  styleUrl: './message.component.css',
+  imports: [
+    NgIconComponent,
+    FlowchartMenuComponent,
+    MessageComponent,
+    CollectDataComponent,
+  ],
+  templateUrl: './widget.component.html',
+  styleUrl: './widget.component.css',
   host: {
     class: 'absolute',
     '[style.top]': 'data.position.top + "px"',
     '[style.left]': 'data.position.left + "px"',
   },
 })
-export class MessageComponent {
+export class WidgetComponent {
   host = inject(ElementRef);
-  flowchart = inject(FlowchartComponent);
   flowchartService = inject(FlowchartService);
-
-  title: string = '';
-  connection?: Connection | null;
-  menu: WidgetType[] = ['message', 'collect'];
 
   @Input() data!: Widget;
   @Output() onRemove = new EventEmitter<void>();
 
-  ngOnInit() {}
+  title: string = '';
+  connection?: Connection | null;
 
   ngAfterViewInit() {
     this.flowchartService.instance.addEndpoint(this.host.nativeElement, {
@@ -50,10 +46,6 @@ export class MessageComponent {
       connector: 'Flowchart',
     });
     this.flowchartService.changes.next(this);
-  }
-
-  ngOnDestroy() {
-    console.log(this.data.id);
   }
 
   deleteWidget() {

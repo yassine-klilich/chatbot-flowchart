@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BrowserJsPlumbInstance, newInstance } from '@jsplumb/browser-ui';
 import { Subject } from 'rxjs';
-import { MessageComponent } from '../flowchart/message/message.component';
+import { MessageComponent } from '../flowchart/widget/message/message.component';
 
 @Injectable({
   providedIn: 'root',
@@ -17,10 +17,27 @@ export class FlowchartService {
         left: 188,
       },
     },
+    {
+      id: 200,
+      type: 'collect',
+      content: 'Hello there, how can I help you ?',
+      position: {
+        top: 250,
+        left: 188,
+      },
+      parentWidget: 100,
+    },
   ];
   instance!: BrowserJsPlumbInstance;
   changes: Subject<any> = new Subject();
   remove: Subject<any> = new Subject();
+  readonly widgetTypes: Record<WidgetType, WidgetType[]> = {
+    message: ['message', 'collect'],
+    collect: ['message', 'collect'],
+    api: [],
+    assistant: [],
+    end: [],
+  };
 
   addWidget(widget: Widget) {
     this.widgets.push(widget);

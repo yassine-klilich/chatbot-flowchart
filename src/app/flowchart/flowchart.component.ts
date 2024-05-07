@@ -9,20 +9,19 @@ import {
 } from '@angular/core';
 import { Connection, newInstance } from '@jsplumb/browser-ui';
 import { FlowchartService, Widget } from '../services/flowchart.service';
-import { MessageComponent } from './message/message.component';
-import { CollectDataComponent } from './collect-data/collect-data.component';
+import { WidgetComponent } from './widget/widget.component';
 
 @Component({
   selector: 'app-flowchart',
   standalone: true,
-  imports: [MessageComponent, CollectDataComponent],
+  imports: [WidgetComponent],
   templateUrl: './flowchart.component.html',
   styleUrl: './flowchart.component.css',
 })
 export class FlowchartComponent implements AfterViewInit {
   flowchartService = inject(FlowchartService);
   @ViewChild('flowchartContainer') container!: ElementRef;
-  @ViewChildren(MessageComponent) widgets!: QueryList<MessageComponent>;
+  @ViewChildren(WidgetComponent) widgets!: QueryList<WidgetComponent>;
 
   ngOnInit() {
     const container = document.getElementById('flowchartContainer');
@@ -46,7 +45,7 @@ export class FlowchartComponent implements AfterViewInit {
     });
   }
 
-  drawConnection(widget: MessageComponent): Connection | null {
+  drawConnection(widget: WidgetComponent): Connection | null {
     if (widget.data.parentWidget) {
       const parentWidget = this.widgets.find(
         (_widget) => _widget.data.id == widget.data.parentWidget
