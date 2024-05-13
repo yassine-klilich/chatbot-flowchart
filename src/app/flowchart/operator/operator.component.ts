@@ -8,13 +8,13 @@ import {
 } from '@angular/core';
 import { MessageComponent } from './message/message.component';
 import { CollectDataComponent } from './collect-data/collect-data.component';
-import { FlowchartService, Widget } from '../../services/flowchart.service';
+import { FlowchartService, Operator } from '../../services/flowchart.service';
 import { Connection } from '@jsplumb/browser-ui';
 import { FlowchartMenuComponent } from '../flowchart-menu/flowchart-menu.component';
 import { NgIconComponent } from '@ng-icons/core';
 
 @Component({
-  selector: 'app-widget',
+  selector: 'app-operator',
   standalone: true,
   imports: [
     NgIconComponent,
@@ -22,19 +22,19 @@ import { NgIconComponent } from '@ng-icons/core';
     MessageComponent,
     CollectDataComponent,
   ],
-  templateUrl: './widget.component.html',
-  styleUrl: './widget.component.css',
+  templateUrl: './operator.component.html',
+  styleUrl: './operator.component.css',
   host: {
     class: 'absolute',
     '[style.top]': 'data.position.top + "px"',
     '[style.left]': 'data.position.left + "px"',
   },
 })
-export class WidgetComponent {
+export class OperatorComponent {
   host = inject(ElementRef);
   flowchartService = inject(FlowchartService);
 
-  @Input() data!: Widget;
+  @Input() data!: Operator;
   @Output() onRemove = new EventEmitter<void>();
 
   title: string = '';
@@ -48,7 +48,7 @@ export class WidgetComponent {
     this.flowchartService.changes.next(this);
   }
 
-  deleteWidget() {
+  deleteOperator() {
     if (this.connection) {
       this.flowchartService.instance.deleteConnection(this.connection);
     }

@@ -1,8 +1,13 @@
-<div
-  id="flowchartContainer"
-  style="width: 100%; height: 400px; position: relative"
->
-  @for (widget of flowchartService.widgets; track widget) {
-  <app-widget [data]="widget" (onRemove)="onRemove(widget)" />
-  }
+<button (click)="setZoom(2.2)">Zoom</button>
+<button (click)="setZoom(1)">Reset zoom</button>
+<div class="h-[600px] border-2 m-.6">
+  <div
+    id="flowchartContainer"
+    #flowchartContainer
+    class="w-[10000px] h-[10000px] overflow-hidden relative"
+  >
+    @for (operator of flowchartService.operators; track operator) {
+    <app-operator [data]="operator" (onRemove)="onRemove(operator)" />
+    }
+  </div>
 </div>

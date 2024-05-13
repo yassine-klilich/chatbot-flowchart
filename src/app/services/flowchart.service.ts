@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BrowserJsPlumbInstance, newInstance } from '@jsplumb/browser-ui';
+import { BrowserJsPlumbInstance } from '@jsplumb/browser-ui';
 import { Subject } from 'rxjs';
-import { MessageComponent } from '../flowchart/widget/message/message.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FlowchartService {
-  widgets: Widget[] = [
+  operators: Operator[] = [
     {
       id: 100,
       type: 'message',
@@ -17,21 +16,21 @@ export class FlowchartService {
         left: 188,
       },
     },
-    {
-      id: 200,
-      type: 'collect',
-      content: 'Hello there, how can I help you ?',
-      position: {
-        top: 250,
-        left: 188,
-      },
-      parentWidget: 100,
-    },
+    // {
+    //   id: 200,
+    //   type: 'collect',
+    //   content: 'Hello there, how can I help you ?',
+    //   position: {
+    //     top: 250,
+    //     left: 188,
+    //   },
+    //   parentOperator: 100,
+    // },
   ];
   instance!: BrowserJsPlumbInstance;
   changes: Subject<any> = new Subject();
   remove: Subject<any> = new Subject();
-  readonly widgetTypes: Record<WidgetType, WidgetType[]> = {
+  readonly operatorTypes: Record<OperatorType, OperatorType[]> = {
     message: ['message', 'collect'],
     collect: ['message', 'collect'],
     api: [],
@@ -39,34 +38,34 @@ export class FlowchartService {
     end: [],
   };
 
-  addWidget(widget: Widget) {
-    this.widgets.push(widget);
+  addOperator(operator: Operator) {
+    this.operators.push(operator);
   }
 
-  removeWidget(widget: Widget) {
-    const index = this.widgets.indexOf(widget);
+  removeOperator(operator: Operator) {
+    const index = this.operators.indexOf(operator);
     if (index > -1) {
-      if (widget.parentWidget) {
-        this.widgets.forEach((i) => {
-          if (i.parentWidget == widget.id) {
-            i.parentWidget = widget.parentWidget;
+      if (operator.parentOperator) {
+        this.operators.forEach((i) => {
+          if (i.parentOperator == operator.id) {
+            i.parentOperator = operator.parentOperator;
           }
         });
       }
-      this.widgets.splice(index, 1);
+      this.operators.splice(index, 1);
     }
   }
 }
 
-export interface Widget {
+export interface Operator {
   id: number;
-  type: WidgetType;
+  type: OperatorType;
   content: string;
   position: {
     top: number;
     left: number;
   };
-  parentWidget?: number;
+  parentOperator?: number;
 }
 
-export type WidgetType = 'message' | 'collect' | 'api' | 'assistant' | 'end';
+export type OperatorType = 'message' | 'collect' | 'api' | 'assistant' | 'end';

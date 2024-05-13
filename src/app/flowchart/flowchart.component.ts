@@ -8,20 +8,22 @@ import {
   inject,
 } from '@angular/core';
 import { Connection, newInstance } from '@jsplumb/browser-ui';
-import { FlowchartService, Widget } from '../services/flowchart.service';
-import { WidgetComponent } from './widget/widget.component';
+import { FlowchartService, Operator } from '../services/flowchart.service';
+import { OperatorComponent } from './operator/operator.component';
+import Panzoom, { PanzoomObject } from '@panzoom/panzoom';
 
 @Component({
   selector: 'app-flowchart',
   standalone: true,
-  imports: [WidgetComponent],
+  imports: [OperatorComponent],
   templateUrl: './flowchart.component.html',
   styleUrl: './flowchart.component.css',
 })
 export class FlowchartComponent implements AfterViewInit {
   flowchartService = inject(FlowchartService);
   @ViewChild('flowchartContainer') container!: ElementRef;
-  @ViewChildren(WidgetComponent) widgets!: QueryList<WidgetComponent>;
+  @ViewChildren(OperatorComponent) operators!: QueryList<OperatorComponent>;
+  panzoomController!: PanzoomObject;
 
   ngOnInit() {
     const container = document.getElementById('flowchartContainer');
@@ -34,27 +36,28 @@ export class FlowchartComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    for (let i = 0; i < this.widgets.length; i++) {
-      const widget = this.widgets.get(i);
-      if (widget) {
-        widget.connection = this.drawConnection(widget);
+    for (let i = 0; i < this.operators.length; i++) {
+      const operator = this.operators.get(i);
+      if (operator) {
+        operator.connection = this.drawConnection(operator);
       }
     }
-    this.flowchartService.changes.subscribe((newWidget) => {
-      newWidget.connection = this.drawConnection(newWidget);
+    this.flowchartService.changes.subscribe((newOperator) => {
+      newOperator.connection = this.drawConnection(newOperator);
     });
+    this.initPanZoom();
   }
 
-  drawConnection(widget: WidgetComponent): Connection | null {
-    if (widget.data.parentWidget) {
-      const parentWidget = this.widgets.find(
-        (_widget) => _widget.data.id == widget.data.parentWidget
+  drawConnection(operator: OperatorComponent): Connection | null {
+    if (operator.data.parentOperator) {
+      const parentOperator = this.operators.find(
+        (_operator) => _operator.data.id == operator.data.parentOperator
       );
-      if (parentWidget) {
+      if (parentOperator) {
         return this.flowchartService.instance.connect({
           anchors: ['Bottom', 'Top'],
-          source: parentWidget.host.nativeElement,
-          target: widget.host.nativeElement,
+          source: parentOperator.host.nativeElement,
+          target: operator.host.nativeElement,
           detachable: false,
           paintStyle: { stroke: 'gray', strokeWidth: 1 },
           endpointStyle: { fill: 'transparent' },
@@ -65,33 +68,59 @@ export class FlowchartComponent implements AfterViewInit {
     return null;
   }
 
-  onRemove(widget: Widget) {
-    const index = this.flowchartService.widgets.indexOf(widget);
+  onRemove(operator: Operator) {
+    const index = this.flowchartService.operators.indexOf(operator);
     if (index > -1) {
-      if (widget.parentWidget) {
-        const nextWidget = this.flowchartService.widgets.find(
-          (i) => i.parentWidget == widget.id
+      if (operator.parentOperator) {
+        const nextOperator = this.flowchartService.operators.find(
+          (i) => i.parentOperator == operator.id
         );
-        if (nextWidget) {
-          nextWidget.position = widget.position;
-          nextWidget.parentWidget = widget.parentWidget;
-          const nextWidgetComp = this.widgets.find(
-            (wid) => wid.data.id == nextWidget.id
+        if (nextOperator) {
+          nextOperator.position = operator.position;
+          nextOperator.parentOperator = operator.parentOperator;
+          const nextOperatorComp = this.operators.find(
+            (wid) => wid.data.id == nextOperator.id
           );
-          if (nextWidgetComp && nextWidgetComp.connection) {
+          if (nextOperatorComp && nextOperatorComp.connection) {
             this.flowchartService.instance.deleteConnection(
-              nextWidgetComp.connection
+              nextOperatorComp.connection
             );
-            nextWidgetComp.connection = this.drawConnection(nextWidgetComp);
+            nextOperatorComp.connection = this.drawConnection(nextOperatorComp);
             setTimeout(() => {
               this.flowchartService.instance.revalidate(
-                nextWidgetComp.host.nativeElement
+                nextOperatorComp.host.nativeElement
               );
             });
           }
         }
       }
-      this.flowchartService.widgets.splice(index, 1);
+      this.flowchartService.operators.splice(index, 1);
     }
+  }
+
+  setZoom(value: number) {
+    this.panzoomController.zoom(value);
+  }
+
+  initPanZoom() {
+    this.panzoomController = Panzoom(this.container.nativeElement, {
+      minScale: -100,
+      maxScale: 200,
+      contain: 'outside',
+    });
+
+    this.container.nativeElement.addEventListener(
+      'wheel',
+      (event: WheelEvent) => {
+        this.panzoomController.zoomWithWheel(event);
+      }
+    );
+
+    this.container.nativeElement.addEventListener(
+      'panzoomchange',
+      (event: any) => {
+        this.flowchartService.instance.repaintEverything();
+      }
+    );
   }
 }

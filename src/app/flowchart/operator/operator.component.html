@@ -1,21 +1,21 @@
 <div class="inline-flex flex-col justify-center">
   <div
-    class="widget-item outline outline-1 outline-[#aaa] rounded-s inline-block w-[28rem] bg-white"
+    class="operator-item outline outline-1 outline-[#aaa] rounded-s inline-block w-[28rem] bg-white"
   >
     <div class="py-.6 px-1 bg-gray-200 text-s flex">
       <span class="grow text-center">{{ title }}</span>
-      <button (click)="deleteWidget()">
+      <button (click)="deleteOperator()">
         <ng-icon name="lucideTrash2"></ng-icon>
       </button>
     </div>
     @switch(data.type) { @case ('message') {
-    <app-message #widget [data]="data" />
+    <app-message #operator [data]="data" />
     } @case ('collect') {
-    <app-collect-data #widget [data]="data" />
+    <app-collect-data #operator [data]="data" />
     } }
   </div>
   <app-flowchart-menu
-    [menu]="flowchartService.widgetTypes[data.type]"
+    [menu]="flowchartService.operatorTypes[data.type]"
     [parent]="this"
   />
 </div>

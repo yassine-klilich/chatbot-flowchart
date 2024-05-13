@@ -1,6 +1,5 @@
-.item {
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  border: 1px solid black;
+#flowchartContainer {
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, #dadada 1px, transparent 1px),
+    linear-gradient(to bottom, #dadada 1px, transparent 1px);
 }
