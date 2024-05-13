@@ -12,6 +12,8 @@ import { FlowchartService, Operator } from '../../services/flowchart.service';
 import { Connection } from '@jsplumb/browser-ui';
 import { FlowchartMenuComponent } from '../flowchart-menu/flowchart-menu.component';
 import { NgIconComponent } from '@ng-icons/core';
+import { EndComponent } from './end/end.component';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-operator',
@@ -21,6 +23,8 @@ import { NgIconComponent } from '@ng-icons/core';
     FlowchartMenuComponent,
     MessageComponent,
     CollectDataComponent,
+    EndComponent,
+    TitleCasePipe,
   ],
   templateUrl: './operator.component.html',
   styleUrl: './operator.component.css',

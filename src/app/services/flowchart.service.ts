@@ -16,23 +16,23 @@ export class FlowchartService {
         left: 188,
       },
     },
-    {
-      id: 200,
-      type: 'collect',
-      content: 'Hello there, how can I help you ?',
-      position: {
-        top: 250,
-        left: 188,
-      },
-      parentOperator: 100,
-    },
+    // {
+    //   id: 200,
+    //   type: 'collect',
+    //   content: 'Hello there, how can I help you ?',
+    //   position: {
+    //     top: 250,
+    //     left: 188,
+    //   },
+    //   parentOperator: 100,
+    // },
   ];
   instance!: BrowserJsPlumbInstance;
   changes: Subject<any> = new Subject();
   remove: Subject<any> = new Subject();
   readonly operatorTypes: Record<OperatorType, OperatorType[]> = {
-    message: ['message', 'collect'],
-    collect: ['message', 'collect'],
+    message: ['message', 'collect', 'end'],
+    collect: ['message', 'collect', 'end'],
     api: [],
     assistant: [],
     end: [],

@@ -4,13 +4,14 @@ import {
   OperatorType,
 } from '../../services/flowchart.service';
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
+import { TitleCasePipe } from '@angular/common';
 
 let _countID: number = 0;
 
 @Component({
   selector: 'app-flowchart-menu',
   standalone: true,
-  imports: [CdkMenu, CdkMenuItem, CdkMenuTrigger],
+  imports: [CdkMenu, CdkMenuItem, CdkMenuTrigger, TitleCasePipe],
   templateUrl: './flowchart-menu.component.html',
   styleUrl: './flowchart-menu.component.css',
 })
