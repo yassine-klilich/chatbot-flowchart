@@ -25,7 +25,7 @@ import { NgIconComponent } from '@ng-icons/core';
   templateUrl: './operator.component.html',
   styleUrl: './operator.component.css',
   host: {
-    class: 'absolute',
+    class: 'absolute operator',
     '[style.top]': 'data.position.top + "px"',
     '[style.left]': 'data.position.left + "px"',
   },

@@ -100,6 +100,7 @@ export class FlowchartComponent implements AfterViewInit {
 
   setZoom(value: number) {
     this.panzoomController.zoom(value);
+    this.panzoomController.pan(0, 0);
   }
 
   initPanZoom() {
@@ -107,19 +108,13 @@ export class FlowchartComponent implements AfterViewInit {
       minScale: -100,
       maxScale: 200,
       contain: 'outside',
+      excludeClass: 'operator',
     });
 
     this.container.nativeElement.addEventListener(
       'wheel',
       (event: WheelEvent) => {
         this.panzoomController.zoomWithWheel(event);
-      }
-    );
-
-    this.container.nativeElement.addEventListener(
-      'panzoomchange',
-      (event: any) => {
-        this.flowchartService.instance.repaintEverything();
       }
     );
   }

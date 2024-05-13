@@ -16,16 +16,16 @@ export class FlowchartService {
         left: 188,
       },
     },
-    // {
-    //   id: 200,
-    //   type: 'collect',
-    //   content: 'Hello there, how can I help you ?',
-    //   position: {
-    //     top: 250,
-    //     left: 188,
-    //   },
-    //   parentOperator: 100,
-    // },
+    {
+      id: 200,
+      type: 'collect',
+      content: 'Hello there, how can I help you ?',
+      position: {
+        top: 250,
+        left: 188,
+      },
+      parentOperator: 100,
+    },
   ];
   instance!: BrowserJsPlumbInstance;
   changes: Subject<any> = new Subject();
