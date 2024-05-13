@@ -10,6 +10,7 @@ export class FlowchartService {
     {
       id: 100,
       type: 'message',
+      title: 'Welcome',
       content: 'Hello there, how can I help you ?',
       position: {
         top: 48,
@@ -60,6 +61,7 @@ export class FlowchartService {
 export interface Operator {
   id: number;
   type: OperatorType;
+  title: string;
   content: string;
   position: {
     top: number;

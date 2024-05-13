@@ -29,10 +29,11 @@ export class FlowchartMenuComponent {
     this.flowchartService.addOperator({
       id: --_countID,
       type: menu,
+      title: '',
       content: '',
       position: {
-        top: parseFloat(top) + parseFloat(height) + 30,
-        left: parseFloat(left),
+        top: parseInt(top) + parseInt(height) + 30,
+        left: parseInt(left),
       },
       parentOperator: this.parent.data.id,
     });

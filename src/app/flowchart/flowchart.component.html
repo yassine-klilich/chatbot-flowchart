@@ -1,5 +1,8 @@
-<button (click)="setZoom(2.2)">Zoom</button>
-<button (click)="setZoom(1)">Reset zoom</button>
+<div class="flex gap-x-.4">
+  <button class="btn" (click)="setZoom(2.2)">Zoom</button>
+  <button class="btn" (click)="setZoom(1)">Reset zoom</button>
+  <button class="btn" (click)="submit()">Submit</button>
+</div>
 <div class="h-[600px] border-2 m-.6">
   <div
     id="flowchartContainer"

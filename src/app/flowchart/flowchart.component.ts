@@ -118,4 +118,8 @@ export class FlowchartComponent implements AfterViewInit {
       }
     );
   }
+
+  submit() {
+    console.log(this.flowchartService.operators);
+  }
 }
