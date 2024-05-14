@@ -64,7 +64,11 @@ export interface OperatorScript {
   id: number;
   type: OperatorType;
   title: string;
-  data: any;
+  data: {
+    content: string;
+    prompt?: string;
+    validationAnswer?: string;
+  };
   position: {
     top: number;
     left: number;

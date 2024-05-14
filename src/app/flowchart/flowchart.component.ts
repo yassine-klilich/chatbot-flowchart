@@ -8,7 +8,10 @@ import {
   inject,
 } from '@angular/core';
 import { Connection, newInstance } from '@jsplumb/browser-ui';
-import { FlowchartService, Operator } from '../services/flowchart.service';
+import {
+  FlowchartService,
+  OperatorScript,
+} from '../services/flowchart.service';
 import { OperatorComponent } from './operator/operator.component';
 import Panzoom, { PanzoomObject } from '@panzoom/panzoom';
 
@@ -68,7 +71,7 @@ export class FlowchartComponent implements AfterViewInit {
     return null;
   }
 
-  onRemove(operator: Operator) {
+  onRemove(operator: OperatorScript) {
     const index = this.flowchartService.operators.indexOf(operator);
     if (index > -1) {
       if (operator.parentOperator) {
