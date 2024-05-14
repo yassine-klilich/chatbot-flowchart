@@ -1,6 +1,6 @@
 import { Component, Input, inject } from '@angular/core';
 import { OperatorComponent } from '../operator.component';
-import { Operator } from '../../../services/flowchart.service';
+import { OperatorScript } from '../../../services/flowchart.service';
 import { NgIconComponent } from '@ng-icons/core';
 import { FormsModule } from '@angular/forms';
 
@@ -13,5 +13,5 @@ import { FormsModule } from '@angular/forms';
 })
 export class EndComponent {
   operatorComponent = inject(OperatorComponent);
-  @Input() data!: Operator;
+  @Input() data!: OperatorScript;
 }

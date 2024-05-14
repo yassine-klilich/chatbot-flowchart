@@ -6,12 +6,14 @@ import { Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class FlowchartService {
-  operators: Operator[] = [
+  operators: OperatorScript[] = [
     {
       id: 100,
       type: 'message',
       title: 'Welcome',
-      content: 'Hello there, how can I help you ?',
+      data: {
+        content: 'Hello there, how can I help you ?',
+      },
       position: {
         top: 48,
         left: 188,
@@ -39,11 +41,11 @@ export class FlowchartService {
     end: [],
   };
 
-  addOperator(operator: Operator) {
+  addOperator(operator: OperatorScript) {
     this.operators.push(operator);
   }
 
-  removeOperator(operator: Operator) {
+  removeOperator(operator: OperatorScript) {
     const index = this.operators.indexOf(operator);
     if (index > -1) {
       if (operator.parentOperator) {
@@ -58,11 +60,11 @@ export class FlowchartService {
   }
 }
 
-export interface Operator {
+export interface OperatorScript {
   id: number;
   type: OperatorType;
   title: string;
-  content: string;
+  data: any;
   position: {
     top: number;
     left: number;

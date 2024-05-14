@@ -30,7 +30,9 @@ export class FlowchartMenuComponent {
       id: --_countID,
       type: menu,
       title: '',
-      content: '',
+      data: {
+        content: '',
+      },
       position: {
         top: parseInt(top) + parseInt(height) + 30,
         left: parseInt(left),

@@ -8,7 +8,10 @@ import {
 } from '@angular/core';
 import { MessageComponent } from './message/message.component';
 import { CollectDataComponent } from './collect-data/collect-data.component';
-import { FlowchartService, Operator } from '../../services/flowchart.service';
+import {
+  FlowchartService,
+  OperatorScript,
+} from '../../services/flowchart.service';
 import { Connection } from '@jsplumb/browser-ui';
 import { FlowchartMenuComponent } from '../flowchart-menu/flowchart-menu.component';
 import { NgIconComponent } from '@ng-icons/core';
@@ -38,7 +41,7 @@ export class OperatorComponent {
   host = inject(ElementRef);
   flowchartService = inject(FlowchartService);
 
-  @Input() data!: Operator;
+  @Input() data!: OperatorScript;
   @Output() onRemove = new EventEmitter<void>();
 
   title: string = '';
