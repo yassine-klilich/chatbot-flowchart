@@ -27,7 +27,6 @@ export class FlowchartMenuComponent {
     );
 
     this.flowchartService.addOperator({
-      id: --_countID,
       type: menu,
       title: '',
       data: {

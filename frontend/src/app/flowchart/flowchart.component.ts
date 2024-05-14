@@ -14,6 +14,7 @@ import {
 } from '../services/flowchart.service';
 import { OperatorComponent } from './operator/operator.component';
 import Panzoom, { PanzoomObject } from '@panzoom/panzoom';
+import { Chat } from '../services/chat-api.service';
 
 @Component({
   selector: 'app-flowchart',
@@ -54,7 +55,7 @@ export class FlowchartComponent implements AfterViewInit {
   drawConnection(operator: OperatorComponent): Connection | null {
     if (operator.data.parentOperator) {
       const parentOperator = this.operators.find(
-        (_operator) => _operator.data.id == operator.data.parentOperator
+        (_operator) => _operator.data._id == operator.data.parentOperator
       );
       if (parentOperator) {
         return this.flowchartService.instance.connect({
@@ -76,13 +77,13 @@ export class FlowchartComponent implements AfterViewInit {
     if (index > -1) {
       if (operator.parentOperator) {
         const nextOperator = this.flowchartService.operators.find(
-          (i) => i.parentOperator == operator.id
+          (i) => i.parentOperator == operator._id
         );
         if (nextOperator) {
           nextOperator.position = operator.position;
           nextOperator.parentOperator = operator.parentOperator;
           const nextOperatorComp = this.operators.find(
-            (wid) => wid.data.id == nextOperator.id
+            (wid) => wid.data._id == nextOperator._id
           );
           if (nextOperatorComp && nextOperatorComp.connection) {
             this.flowchartService.instance.deleteConnection(
@@ -123,6 +124,11 @@ export class FlowchartComponent implements AfterViewInit {
   }
 
   submit() {
-    console.log(this.flowchartService.operators);
+    const dataSubmit: Chat = {
+      title: 'Chat',
+      operators: this.flowchartService.operators,
+    };
+
+    console.log(dataSubmit);
   }
 }

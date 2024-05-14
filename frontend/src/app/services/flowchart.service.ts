@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
 export class FlowchartService {
   operators: OperatorScript[] = [
     {
-      id: 100,
+      _id: '100',
       type: 'message',
       title: 'Welcome',
       data: {
@@ -50,7 +50,7 @@ export class FlowchartService {
     if (index > -1) {
       if (operator.parentOperator) {
         this.operators.forEach((i) => {
-          if (i.parentOperator == operator.id) {
+          if (i.parentOperator == operator._id) {
             i.parentOperator = operator.parentOperator;
           }
         });
@@ -61,7 +61,7 @@ export class FlowchartService {
 }
 
 export interface OperatorScript {
-  id: number;
+  _id?: string;
   type: OperatorType;
   title: string;
   data: {
