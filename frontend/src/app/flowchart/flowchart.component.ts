@@ -109,8 +109,8 @@ export class FlowchartComponent implements AfterViewInit {
 
   initPanZoom() {
     this.panzoomController = Panzoom(this.container.nativeElement, {
-      minScale: -100,
-      maxScale: 200,
+      minScale: -50,
+      maxScale: 50,
       contain: 'outside',
       excludeClass: 'operator',
     });

@@ -73,7 +73,7 @@ export interface OperatorScript {
     top: number;
     left: number;
   };
-  parentOperator?: number;
+  parentOperator?: string;
 }
 
 export type OperatorType = 'message' | 'collect' | 'api' | 'assistant' | 'end';
