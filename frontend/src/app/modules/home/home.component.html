@@ -1,1 +1,16 @@
-<p>home works!</p>
+<h1>Chats</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (chat of chats; track chat) {
+      <tr>
+        <td>{{chat.name}}</td>
+      </tr>
+
+    }
+  </tbody>
+</table>

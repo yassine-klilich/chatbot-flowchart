@@ -2,7 +2,7 @@ import { Component, Input, inject } from '@angular/core';
 import {
   FlowchartService,
   OperatorType,
-} from '../../services/flowchart.service';
+} from '../../../services/flowchart.service';
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { TitleCasePipe } from '@angular/common';
 import { OperatorComponent } from '../operator/operator.component';

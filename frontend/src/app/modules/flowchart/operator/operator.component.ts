@@ -11,7 +11,7 @@ import { CollectDataComponent } from './collect-data/collect-data.component';
 import {
   FlowchartService,
   OperatorScript,
-} from '../../services/flowchart.service';
+} from '../../../services/flowchart.service';
 import { Connection } from '@jsplumb/browser-ui';
 import { FlowchartMenuComponent } from '../flowchart-menu/flowchart-menu.component';
 import { NgIconComponent } from '@ng-icons/core';

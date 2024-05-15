@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { FlowchartComponent } from './flowchart/flowchart.component';
 import { provideIcons } from '@ng-icons/core';
 import { lucideTrash2, lucideInfo } from '@ng-icons/lucide';
+import { FlowchartComponent } from './modules/flowchart/flowchart.component';
 
 @Component({
   selector: 'app-root',
