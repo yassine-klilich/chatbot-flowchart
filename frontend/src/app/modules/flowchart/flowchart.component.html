@@ -1,16 +1,21 @@
-<div class="flex gap-x-.4">
-  <button class="btn" (click)="setZoom(2.2)">Zoom</button>
-  <button class="btn" (click)="setZoom(1)">Reset zoom</button>
-  <button class="btn" (click)="submit()">Submit</button>
-</div>
-<div class="h-[600px] border-2 m-.6">
-  <div
-    id="flowchartContainer"
-    #flowchartContainer
-    class="w-[10000px] h-[10000px] overflow-hidden relative"
-  >
-    @for (operator of chat.operators; track operator) {
-    <app-operator [data]="operator" (onRemove)="onRemove(operator)" />
-    }
+<div class="flex">
+  <div class="overflow-auto">
+    <div class="flex gap-x-.4">
+      <button class="btn" (click)="setZoom(2.2)">Zoom</button>
+      <button class="btn" (click)="setZoom(1)">Reset zoom</button>
+      <button class="btn" (click)="submit()">Submit</button>
+    </div>
+    <div class="h-[600px] border-2 m-.6">
+      <div
+        id="flowchartContainer"
+        #flowchartContainer
+        class="w-[10000px] h-[10000px] overflow-hidden relative"
+      >
+        @for (operator of chat.operators; track operator) {
+        <app-operator [data]="operator" (onRemove)="onRemove(operator)" />
+        }
+      </div>
+    </div>
   </div>
+  <app-chat></app-chat>
 </div>

@@ -1,1 +1,20 @@
-<p>chat works!</p>
+<div
+  class="w-[30rem] m-1 bg-white rounded-m overflow-hidden h-[35rem] grid grid-rows-[auto_1fr_auto]"
+  style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
+>
+  <div class="bg-blue-200 px-1 py-.6">Chat name</div>
+  <div class="p-1 flex flex-col gap-y-1 overflow-auto">
+    <div class="bot-msg bg-blue-100 rounded-s px-.8 py-.6">
+      Hello, how are you?
+    </div>
+    <div class="user-msg bg-gray-100 rounded-s px-.8 py-.6">
+      I'm doing fine, thank you <3
+    </div>
+  </div>
+  <div class="p-1 pt-.6 flex gap-x-.8">
+    <textarea
+      class="border-2 border-gray-200 rounded-m focus:border-blue-500 outline-none grow px-.8 py-.6"
+    ></textarea>
+    <button class="btn">Send</button>
+  </div>
+</div>

@@ -16,6 +16,7 @@ import { OperatorComponent } from './operator/operator.component';
 import Panzoom, { PanzoomObject } from '@panzoom/panzoom';
 import { Chat } from '../../services/chat-api.service';
 import { ActivatedRoute } from '@angular/router';
+import { ChatComponent } from '../chat/chat.component';
 
 const DEFAULT_CHAT: Chat = {
   _id: '-1',
@@ -26,7 +27,7 @@ const DEFAULT_CHAT: Chat = {
 @Component({
   selector: 'app-flowchart',
   standalone: true,
-  imports: [OperatorComponent],
+  imports: [OperatorComponent, ChatComponent],
   templateUrl: './flowchart.component.html',
   styleUrl: './flowchart.component.css',
 })
