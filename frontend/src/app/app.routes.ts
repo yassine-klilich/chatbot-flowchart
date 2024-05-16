@@ -5,10 +5,10 @@ import { FlowchartComponent } from './modules/flowchart/flowchart.component';
 export const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: HomeComponent,
   },
   {
-    path: 'flowchart',
-    component: FlowchartComponent
+    path: 'flowchart/:id',
+    component: FlowchartComponent,
   },
 ];

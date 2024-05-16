@@ -39,6 +39,6 @@ export class ChatApiService {
 
 export interface Chat {
   _id?: string;
-  title: string;
+  name: string;
   operators: OperatorScript[];
 }

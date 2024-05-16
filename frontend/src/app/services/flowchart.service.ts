@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BrowserJsPlumbInstance } from '@jsplumb/browser-ui';
 import { Subject } from 'rxjs';
+import { Chat } from './chat-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +31,25 @@ export class FlowchartService {
     //   parentOperator: 100,
     // },
   ];
+
+  chats: Chat[] = [
+    {
+      _id: '123',
+      name: 'Chat 001',
+      operators: this.operators,
+    },
+    {
+      _id: '456',
+      name: 'Chat 002',
+      operators: this.operators,
+    },
+    {
+      _id: '789',
+      name: 'Chat 003',
+      operators: this.operators,
+    },
+  ];
+
   instance!: BrowserJsPlumbInstance;
   changes: Subject<any> = new Subject();
   remove: Subject<any> = new Subject();
@@ -56,6 +76,13 @@ export class FlowchartService {
         });
       }
       this.operators.splice(index, 1);
+    }
+  }
+
+  deleteChat(chat: Chat) {
+    const index = this.chats.indexOf(chat);
+    if (index > -1) {
+      this.chats.splice(index, 1);
     }
   }
 }

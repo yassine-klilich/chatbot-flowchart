@@ -1,25 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { FlowchartService } from '../../services/flowchart.service';
+import { NgIconComponent } from '@ng-icons/core';
+import { Chat } from '../../services/chat-api.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [NgIconComponent, RouterLink],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.css',
 })
 export class HomeComponent {
-  chats = [
-    {
-      _id: '123',
-      name: 'Chat 001'
-    },
-    {
-      _id: '456',
-      name: 'Chat 002'
-    },
-    {
-      _id: '789',
-      name: 'Chat 003'
-    },
-  ]
+  flowchartService = inject(FlowchartService);
+
+  deleteChat(chat: Chat) {
+    if (confirm('Are you sure you want to delete this chat?')) {
+      this.flowchartService.deleteChat(chat);
+    }
+  }
 }

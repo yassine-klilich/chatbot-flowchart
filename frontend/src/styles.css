@@ -10,10 +10,35 @@ html {
 
 body {
   font-size: 1.4rem;
+  margin: 0.8rem;
 }
 
 .btn {
   border: 1px solid gray;
   border-radius: 4px;
   padding: 2px 4px;
+}
+
+/* Table styles */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+table td,
+table th {
+  padding: 0.8rem 1.4rem;
+}
+table tbody tr {
+  border-bottom: 1px solid #ebebeb;
+}
+table tr:hover {
+  background-color: #f0f0f0;
+}
+table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #046faa;
+  color: white;
+  border-radius: 6px;
 }

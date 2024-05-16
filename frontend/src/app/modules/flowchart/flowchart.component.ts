@@ -15,6 +15,7 @@ import {
 import { OperatorComponent } from './operator/operator.component';
 import Panzoom, { PanzoomObject } from '@panzoom/panzoom';
 import { Chat } from '../../services/chat-api.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-flowchart',
@@ -25,6 +26,8 @@ import { Chat } from '../../services/chat-api.service';
 })
 export class FlowchartComponent implements AfterViewInit {
   flowchartService = inject(FlowchartService);
+  route = inject(ActivatedRoute);
+
   @ViewChild('flowchartContainer') container!: ElementRef;
   @ViewChildren(OperatorComponent) operators!: QueryList<OperatorComponent>;
   panzoomController!: PanzoomObject;
@@ -37,6 +40,13 @@ export class FlowchartComponent implements AfterViewInit {
         elementsDraggable: false,
       });
     }
+
+    this.route.params.subscribe((params) => {
+      const id = params['id'];
+
+      // Fetch for chat's operators.
+      console.log(`ID: ${id}`);
+    });
   }
 
   ngAfterViewInit(): void {
@@ -125,7 +135,7 @@ export class FlowchartComponent implements AfterViewInit {
 
   submit() {
     const dataSubmit: Chat = {
-      title: 'Chat',
+      name: 'Chat',
       operators: this.flowchartService.operators,
     };
 
