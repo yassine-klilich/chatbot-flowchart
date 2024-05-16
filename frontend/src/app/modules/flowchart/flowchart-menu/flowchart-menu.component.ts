@@ -24,20 +24,12 @@ export class FlowchartMenuComponent {
   @Input() parent!: OperatorComponent;
 
   _addOperator(menu: OperatorType) {
-    const { top, left, height } = getComputedStyle(
-      this.parent.host.nativeElement
-    );
-
     this.flowchartComponent.addOperator({
       _id: this._generateRandomId(),
       type: menu,
       title: '',
       data: {
         content: '',
-      },
-      position: {
-        top: parseInt(top) + parseInt(height) + 30,
-        left: parseInt(left),
       },
       parentOperator: this.parent.data._id,
     });

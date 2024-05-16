@@ -17,6 +17,7 @@ import { FlowchartMenuComponent } from '../flowchart-menu/flowchart-menu.compone
 import { NgIconComponent } from '@ng-icons/core';
 import { EndComponent } from './end/end.component';
 import { TitleCasePipe } from '@angular/common';
+import { FlowchartComponent } from '../flowchart.component';
 
 @Component({
   selector: 'app-operator',
@@ -33,13 +34,12 @@ import { TitleCasePipe } from '@angular/common';
   styleUrl: './operator.component.css',
   host: {
     class: 'absolute operator',
-    '[style.top]': 'data.position.top + "px"',
-    '[style.left]': 'data.position.left + "px"',
   },
 })
 export class OperatorComponent {
-  host = inject(ElementRef);
+  host = inject(ElementRef<HTMLElement>);
   flowchartService = inject(FlowchartService);
+  flowchartComponent = inject(FlowchartComponent);
 
   @Input() data!: OperatorScript;
   @Output() onRemove = new EventEmitter<void>();
@@ -59,5 +59,25 @@ export class OperatorComponent {
       this.flowchartService.instance.deleteConnection(this.connection);
     }
     this.onRemove.emit();
+  }
+
+  setPosition() {
+    if (this.data.parentOperator) {
+      const parentOperator = this.flowchartComponent.operators.find(
+        (_operator) => _operator.data._id == this.data.parentOperator
+      );
+      if (parentOperator) {
+        const { top, left, height } = getComputedStyle(
+          parentOperator.host.nativeElement
+        );
+
+        this.host.nativeElement.style.top =
+          parseInt(top) + parseInt(height) + 30 + 'px';
+        this.host.nativeElement.style.left = parseInt(left) + 'px';
+      }
+    } else {
+      this.host.nativeElement.style.top = '48px';
+      this.host.nativeElement.style.left = '188px';
+    }
   }
 }

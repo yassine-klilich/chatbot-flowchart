@@ -19,10 +19,6 @@ export class FlowchartService {
           data: {
             content: 'Hello there :)',
           },
-          position: {
-            top: 48,
-            left: 188,
-          },
         },
         {
           _id: '200',
@@ -30,10 +26,6 @@ export class FlowchartService {
           title: 'help',
           data: {
             content: 'How can I help you ?',
-          },
-          position: {
-            top: 250,
-            left: 188,
           },
           parentOperator: '100',
         },
@@ -50,10 +42,6 @@ export class FlowchartService {
           data: {
             content: 'Hello there, how can I help you ?',
           },
-          position: {
-            top: 48,
-            left: 188,
-          },
         },
         {
           _id: '200',
@@ -62,10 +50,6 @@ export class FlowchartService {
           data: {
             content: 'Hello there, how can I help you ?',
           },
-          position: {
-            top: 48,
-            left: 188,
-          },
         },
         {
           _id: '300',
@@ -73,10 +57,6 @@ export class FlowchartService {
           title: 'Welcome',
           data: {
             content: 'Hello there, how can I help you ?',
-          },
-          position: {
-            top: 48,
-            left: 188,
           },
         },
       ],
@@ -91,10 +71,6 @@ export class FlowchartService {
           title: 'Welcome',
           data: {
             content: 'Hello there, how can I help you ?',
-          },
-          position: {
-            top: 48,
-            left: 188,
           },
         },
       ],
@@ -128,10 +104,6 @@ export interface OperatorScript {
     content: string;
     prompt?: string;
     validationAnswer?: string;
-  };
-  position: {
-    top: number;
-    left: number;
   };
   parentOperator?: string;
 }
