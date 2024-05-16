@@ -6,6 +6,7 @@ import {
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { TitleCasePipe } from '@angular/common';
 import { OperatorComponent } from '../operator/operator.component';
+import { FlowchartComponent } from '../flowchart.component';
 
 let _countID: number = 0;
 
@@ -17,7 +18,7 @@ let _countID: number = 0;
   styleUrl: './flowchart-menu.component.css',
 })
 export class FlowchartMenuComponent {
-  flowchartService = inject(FlowchartService);
+  flowchartComponent = inject(FlowchartComponent);
 
   @Input() menu!: OperatorType[];
   @Input() parent!: OperatorComponent;
@@ -27,7 +28,7 @@ export class FlowchartMenuComponent {
       this.parent.host.nativeElement
     );
 
-    this.flowchartService.addOperator({
+    this.flowchartComponent.addOperator({
       _id: this._generateRandomId(),
       type: menu,
       title: '',
@@ -43,10 +44,13 @@ export class FlowchartMenuComponent {
   }
 
   _generateRandomId() {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
     for (let i = 0; i < 8; i++) {
-        result += characters.charAt(Math.floor(Math.random() * characters.length));
+      result += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
     }
     return result;
   }

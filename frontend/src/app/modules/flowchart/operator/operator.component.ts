@@ -44,7 +44,6 @@ export class OperatorComponent {
   @Input() data!: OperatorScript;
   @Output() onRemove = new EventEmitter<void>();
 
-  title: string = '';
   connection?: Connection | null;
 
   ngAfterViewInit() {

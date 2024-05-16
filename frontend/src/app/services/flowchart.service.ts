@@ -7,46 +7,97 @@ import { Chat } from './chat-api.service';
   providedIn: 'root',
 })
 export class FlowchartService {
-  operators: OperatorScript[] = [
-    {
-      _id: '100',
-      type: 'message',
-      title: 'Welcome',
-      data: {
-        content: 'Hello there, how can I help you ?',
-      },
-      position: {
-        top: 48,
-        left: 188,
-      },
-    },
-    // {
-    //   id: 200,
-    //   type: 'collect',
-    //   content: 'Hello there, how can I help you ?',
-    //   position: {
-    //     top: 250,
-    //     left: 188,
-    //   },
-    //   parentOperator: 100,
-    // },
-  ];
-
   chats: Chat[] = [
     {
       _id: '123',
       name: 'Chat 001',
-      operators: this.operators,
+      operators: [
+        {
+          _id: '100',
+          type: 'message',
+          title: '',
+          data: {
+            content: 'Hello there :)',
+          },
+          position: {
+            top: 48,
+            left: 188,
+          },
+        },
+        {
+          _id: '200',
+          type: 'message',
+          title: 'help',
+          data: {
+            content: 'How can I help you ?',
+          },
+          position: {
+            top: 250,
+            left: 188,
+          },
+          parentOperator: '100',
+        },
+      ],
     },
     {
       _id: '456',
       name: 'Chat 002',
-      operators: this.operators,
+      operators: [
+        {
+          _id: '100',
+          type: 'message',
+          title: 'Welcome',
+          data: {
+            content: 'Hello there, how can I help you ?',
+          },
+          position: {
+            top: 48,
+            left: 188,
+          },
+        },
+        {
+          _id: '200',
+          type: 'collect',
+          title: 'Welcome',
+          data: {
+            content: 'Hello there, how can I help you ?',
+          },
+          position: {
+            top: 48,
+            left: 188,
+          },
+        },
+        {
+          _id: '300',
+          type: 'end',
+          title: 'Welcome',
+          data: {
+            content: 'Hello there, how can I help you ?',
+          },
+          position: {
+            top: 48,
+            left: 188,
+          },
+        },
+      ],
     },
     {
       _id: '789',
       name: 'Chat 003',
-      operators: this.operators,
+      operators: [
+        {
+          _id: '100',
+          type: 'message',
+          title: 'Welcome',
+          data: {
+            content: 'Hello there, how can I help you ?',
+          },
+          position: {
+            top: 48,
+            left: 188,
+          },
+        },
+      ],
     },
   ];
 
@@ -60,24 +111,6 @@ export class FlowchartService {
     assistant: [],
     end: [],
   };
-
-  addOperator(operator: OperatorScript) {
-    this.operators.push(operator);
-  }
-
-  removeOperator(operator: OperatorScript) {
-    const index = this.operators.indexOf(operator);
-    if (index > -1) {
-      if (operator.parentOperator) {
-        this.operators.forEach((i) => {
-          if (i.parentOperator == operator._id) {
-            i.parentOperator = operator.parentOperator;
-          }
-        });
-      }
-      this.operators.splice(index, 1);
-    }
-  }
 
   deleteChat(chat: Chat) {
     const index = this.chats.indexOf(chat);

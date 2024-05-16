@@ -9,7 +9,7 @@
     #flowchartContainer
     class="w-[10000px] h-[10000px] overflow-hidden relative"
   >
-    @for (operator of flowchartService.operators; track operator) {
+    @for (operator of chat.operators; track operator) {
     <app-operator [data]="operator" (onRemove)="onRemove(operator)" />
     }
   </div>

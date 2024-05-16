@@ -17,6 +17,12 @@ import Panzoom, { PanzoomObject } from '@panzoom/panzoom';
 import { Chat } from '../../services/chat-api.service';
 import { ActivatedRoute } from '@angular/router';
 
+const DEFAULT_CHAT: Chat = {
+  _id: '-1',
+  name: 'Chat -1',
+  operators: [],
+};
+
 @Component({
   selector: 'app-flowchart',
   standalone: true,
@@ -28,9 +34,11 @@ export class FlowchartComponent implements AfterViewInit {
   flowchartService = inject(FlowchartService);
   route = inject(ActivatedRoute);
 
+  chat!: Chat;
+  panzoomController!: PanzoomObject;
+
   @ViewChild('flowchartContainer') container!: ElementRef;
   @ViewChildren(OperatorComponent) operators!: QueryList<OperatorComponent>;
-  panzoomController!: PanzoomObject;
 
   ngOnInit() {
     const container = document.getElementById('flowchartContainer');
@@ -44,8 +52,8 @@ export class FlowchartComponent implements AfterViewInit {
     this.route.params.subscribe((params) => {
       const id = params['id'];
 
-      // Fetch for chat's operators.
-      console.log(`ID: ${id}`);
+      this.chat =
+        this.flowchartService.chats.find((i) => i._id == id) || DEFAULT_CHAT;
     });
   }
 
@@ -82,11 +90,15 @@ export class FlowchartComponent implements AfterViewInit {
     return null;
   }
 
+  addOperator(operator: OperatorScript) {
+    this.chat.operators.push(operator);
+  }
+
   onRemove(operator: OperatorScript) {
-    const index = this.flowchartService.operators.indexOf(operator);
+    const index = this.chat.operators.indexOf(operator);
     if (index > -1) {
       if (operator.parentOperator) {
-        const nextOperator = this.flowchartService.operators.find(
+        const nextOperator = this.chat.operators.find(
           (i) => i.parentOperator == operator._id
         );
         if (nextOperator) {
@@ -108,7 +120,7 @@ export class FlowchartComponent implements AfterViewInit {
           }
         }
       }
-      this.flowchartService.operators.splice(index, 1);
+      this.chat.operators.splice(index, 1);
     }
   }
 
@@ -134,11 +146,6 @@ export class FlowchartComponent implements AfterViewInit {
   }
 
   submit() {
-    const dataSubmit: Chat = {
-      name: 'Chat',
-      operators: this.flowchartService.operators,
-    };
-
-    console.log(dataSubmit);
+    console.log(this.chat);
   }
 }

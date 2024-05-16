@@ -14,9 +14,13 @@ body {
 }
 
 .btn {
+  display: inline-flex;
   border: 1px solid gray;
   border-radius: 4px;
-  padding: 2px 4px;
+  padding: 0.2rem 0.8rem;
+  align-items: center;
+  justify-content: center;
+  column-gap: 0.4rem;
 }
 
 /* Table styles */
