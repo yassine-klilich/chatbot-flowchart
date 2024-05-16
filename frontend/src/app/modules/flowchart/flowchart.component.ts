@@ -62,13 +62,13 @@ export class FlowchartComponent implements AfterViewInit {
     for (let i = 0; i < this.operators.length; i++) {
       const operator = this.operators.get(i);
       if (operator) {
-        operator.setPosition();
+        operator.calculatePosition();
         operator.connection = this.drawConnection(operator);
         this.flowchartService.instance.revalidate(operator.host.nativeElement);
       }
     }
     this.flowchartService.changes.subscribe((newOperator) => {
-      newOperator.setPosition();
+      newOperator.calculatePosition();
       newOperator.connection = this.drawConnection(newOperator);
       this.flowchartService.instance.revalidate(newOperator.host.nativeElement);
     });
@@ -100,33 +100,33 @@ export class FlowchartComponent implements AfterViewInit {
   }
 
   onRemove(operator: OperatorScript) {
-    //const index = this.chat.operators.indexOf(operator);
-    //if (index > -1) {
-    //  if (operator.parentOperator) {
-    //    const nextOperator = this.chat.operators.find(
-    //      (i) => i.parentOperator == operator._id
-    //    );
-    //    if (nextOperator) {
-    //      nextOperator.position = operator.position;
-    //      nextOperator.parentOperator = operator.parentOperator;
-    //      const nextOperatorComp = this.operators.find(
-    //        (wid) => wid.data._id == nextOperator._id
-    //      );
-    //      if (nextOperatorComp && nextOperatorComp.connection) {
-    //        this.flowchartService.instance.deleteConnection(
-    //          nextOperatorComp.connection
-    //        );
-    //        nextOperatorComp.connection = this.drawConnection(nextOperatorComp);
-    //        setTimeout(() => {
-    //          this.flowchartService.instance.revalidate(
-    //            nextOperatorComp.host.nativeElement
-    //          );
-    //        });
-    //      }
-    //    }
-    //  }
-    //  this.chat.operators.splice(index, 1);
-    //}
+    const index = this.chat.operators.indexOf(operator);
+    if (index > -1) {
+      if (operator.parentOperator) {
+        const nextOperator = this.chat.operators.find(
+          (i) => i.parentOperator == operator._id
+        );
+        if (nextOperator) {
+          //nextOperator.position = operator.position;
+          nextOperator.parentOperator = operator.parentOperator;
+          const nextOperatorComp = this.operators.find(
+            (wid) => wid.data._id == nextOperator._id
+          );
+          if (nextOperatorComp && nextOperatorComp.connection) {
+            this.flowchartService.instance.deleteConnection(
+              nextOperatorComp.connection
+            );
+            nextOperatorComp.connection = this.drawConnection(nextOperatorComp);
+            setTimeout(() => {
+              this.flowchartService.instance.revalidate(
+                nextOperatorComp.host.nativeElement
+              );
+            });
+          }
+        }
+      }
+      this.chat.operators.splice(index, 1);
+    }
   }
 
   setZoom(value: number) {

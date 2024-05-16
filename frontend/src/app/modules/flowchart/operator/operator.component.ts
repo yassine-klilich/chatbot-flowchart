@@ -61,7 +61,22 @@ export class OperatorComponent {
     this.onRemove.emit();
   }
 
-  setPosition() {
+  getPosition() {
+    const { top, left, height } = getComputedStyle(this.host.nativeElement);
+
+    return {
+      top: (this.host.nativeElement.style.top =
+        parseInt(top) + parseInt(height) + 30 + 'px'),
+      left: (this.host.nativeElement.style.left = parseInt(left) + 'px'),
+    };
+  }
+
+  setPosition(top: number, left: number) {
+    this.host.nativeElement.style.top = top + 'px';
+    this.host.nativeElement.style.left = left + 'px';
+  }
+
+  calculatePosition(): void {
     if (this.data.parentOperator) {
       const parentOperator = this.flowchartComponent.operators.find(
         (_operator) => _operator.data._id == this.data.parentOperator
@@ -71,9 +86,7 @@ export class OperatorComponent {
           parentOperator.host.nativeElement
         );
 
-        this.host.nativeElement.style.top =
-          parseInt(top) + parseInt(height) + 30 + 'px';
-        this.host.nativeElement.style.left = parseInt(left) + 'px';
+        this.setPosition(parseInt(top) + parseInt(height) + 30, parseInt(left));
       }
     } else {
       this.host.nativeElement.style.top = '48px';
