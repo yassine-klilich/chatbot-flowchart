@@ -4,6 +4,7 @@ import { Component, Input, inject } from '@angular/core';
 import { OperatorType } from '../../../core/models';
 import { FlowchartComponent } from '../flowchart.component';
 import { OperatorComponent } from '../operator/operator.component';
+import { uuid } from '@jsplumb/browser-ui';
 
 let _countID: number = 0;
 
@@ -22,7 +23,7 @@ export class FlowchartMenuComponent {
 
   _addOperator(menu: OperatorType) {
     this.flowchartComponent.addOperator({
-      _id: this._generateRandomId(),
+      _id: uuid(),
       type: menu,
       title: '',
       data: {
@@ -30,17 +31,5 @@ export class FlowchartMenuComponent {
       },
       parentOperator: this.parent.data._id,
     });
-  }
-
-  _generateRandomId() {
-    const characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    for (let i = 0; i < 8; i++) {
-      result += characters.charAt(
-        Math.floor(Math.random() * characters.length)
-      );
-    }
-    return result;
   }
 }

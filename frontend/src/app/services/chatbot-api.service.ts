@@ -14,12 +14,11 @@ export class ChatbotApiService {
   constructor() {}
 
   getChatbots(): Observable<Chatbot[]> {
-    return this.http.get<string>(this.apiUrl).pipe(
-      map((result) => {
-        return JSON.parse(result);
-      })
-    );
+    return this.http
+      .get<string>(this.apiUrl)
+      .pipe(map((result) => JSON.parse(result)));
   }
+
   getChatbot(id: string): Observable<Chatbot> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get<Chatbot>(url);

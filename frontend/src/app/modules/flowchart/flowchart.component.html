@@ -11,9 +11,9 @@
         #flowchartContainer
         class="w-[10000px] h-[10000px] overflow-hidden relative"
       >
-        @for (operator of chatbot.operators; track operator) {
+        @if (chatbot) { @for (operator of chatbot.operators; track operator) {
         <app-operator [data]="operator" (onRemove)="onRemove(operator)" />
-        }
+        } }
       </div>
     </div>
   </div>

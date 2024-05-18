@@ -8,9 +8,7 @@ import {
   inject,
 } from '@angular/core';
 import { Connection, newInstance } from '@jsplumb/browser-ui';
-import {
-  FlowchartService,
-} from '../../services/flowchart.service';
+import { FlowchartService } from '../../services/flowchart.service';
 import { OperatorComponent } from './operator/operator.component';
 import Panzoom, { PanzoomObject } from '@panzoom/panzoom';
 import { ActivatedRoute } from '@angular/router';
@@ -54,8 +52,9 @@ export class FlowchartComponent implements AfterViewInit {
     this.route.params.subscribe((params) => {
       const id = params['id'];
 
-      this.chatbot =
-        this.flowchartService.chats.find((i) => i._id == id) || DEFAULT_CHAT;
+      this.chatbotAPI.getChatbot(id).subscribe((result: Chatbot) => {
+        this.chatbot = result || DEFAULT_CHAT;
+      });
     });
   }
 
@@ -63,11 +62,11 @@ export class FlowchartComponent implements AfterViewInit {
     for (let i = 0; i < this.operators.length; i++) {
       const operator = this.operators.get(i);
       if (operator) {
-        this.drawOperator(operator)
+        this.drawOperator(operator);
       }
     }
     this.flowchartService.changes.subscribe((newOperator) => {
-      this.drawOperator(newOperator)
+      this.drawOperator(newOperator);
     });
     this.initPanZoom();
   }

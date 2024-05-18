@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ChatbotApiService } from '../../../services/chatbot-api.service';
 import { Router } from '@angular/router';
 import { Chatbot } from '../../../core/models';
+import { uuid } from '@jsplumb/browser-ui';
 
 @Component({
   selector: 'app-new-chatbot-dialog',
@@ -28,7 +29,16 @@ export class NewChatbotDialogComponent {
     this.chatbotAPI
       .postChatbot({
         name: this.name,
-        operators: [],
+        operators: [
+          {
+            _id: uuid(),
+            type: 'message',
+            title: '',
+            data: {
+              content: 'Hello there :)',
+            },
+          },
+        ],
       })
       .subscribe((newChatbot: Chatbot) => {
         this.router.navigate(['flowchart', newChatbot._id]);
