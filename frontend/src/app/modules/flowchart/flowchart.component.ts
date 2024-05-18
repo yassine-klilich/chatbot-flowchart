@@ -14,11 +14,11 @@ import {
 } from '../../services/flowchart.service';
 import { OperatorComponent } from './operator/operator.component';
 import Panzoom, { PanzoomObject } from '@panzoom/panzoom';
-import { Chat } from '../../services/chatbot-api.service';
+import { Chatbot } from '../../services/chatbot-api.service';
 import { ActivatedRoute } from '@angular/router';
 import { ChatComponent } from '../chat/chat.component';
 
-const DEFAULT_CHAT: Chat = {
+const DEFAULT_CHAT: Chatbot = {
   _id: '-1',
   name: 'Chat -1',
   operators: [],
@@ -35,7 +35,7 @@ export class FlowchartComponent implements AfterViewInit {
   flowchartService = inject(FlowchartService);
   route = inject(ActivatedRoute);
 
-  chat!: Chat;
+  chatbot!: Chatbot;
   panzoomController!: PanzoomObject;
 
   @ViewChild('flowchartContainer') container!: ElementRef;
@@ -53,7 +53,7 @@ export class FlowchartComponent implements AfterViewInit {
     this.route.params.subscribe((params) => {
       const id = params['id'];
 
-      this.chat =
+      this.chatbot =
         this.flowchartService.chats.find((i) => i._id == id) || DEFAULT_CHAT;
     });
   }
@@ -92,11 +92,11 @@ export class FlowchartComponent implements AfterViewInit {
   }
 
   addOperator(operator: OperatorScript) {
-    this.chat.operators.push(operator);
+    this.chatbot.operators.push(operator);
   }
 
   onRemove(operator: OperatorScript) {
-    const index = this.chat.operators.indexOf(operator);
+    const index = this.chatbot.operators.indexOf(operator);
     if (index > -1) {
       if (operator.parentOperator) {
         const nextOperatorComp = this.operators.find(
@@ -109,7 +109,7 @@ export class FlowchartComponent implements AfterViewInit {
           }
         }
       }
-      this.chat.operators.splice(index, 1);
+      this.chatbot.operators.splice(index, 1);
     }
   }
 
@@ -144,6 +144,6 @@ export class FlowchartComponent implements AfterViewInit {
   }
 
   submit() {
-    console.log(this.chat);
+    console.log(this.chatbot);
   }
 }

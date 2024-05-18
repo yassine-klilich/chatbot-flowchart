@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BrowserJsPlumbInstance } from '@jsplumb/browser-ui';
 import { Subject } from 'rxjs';
-import { Chat } from './chatbot-api.service';
+import { Chatbot } from './chatbot-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FlowchartService {
-  chats: Chat[] = [
+  chats: Chatbot[] = [
     {
       _id: '123',
       name: 'Chat 001',
@@ -90,7 +90,7 @@ export class FlowchartService {
     end: [],
   };
 
-  deleteChat(chat: Chat) {
+  deleteChat(chat: Chatbot) {
     const index = this.chats.indexOf(chat);
     if (index > -1) {
       this.chats.splice(index, 1);

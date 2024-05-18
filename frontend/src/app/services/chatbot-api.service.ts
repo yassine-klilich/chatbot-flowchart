@@ -7,37 +7,37 @@ import { OperatorScript } from './flowchart.service';
   providedIn: 'root',
 })
 export class ChatbotApiService {
-  private apiUrl = 'http://127.0.0.1:5000/chats';
+  private apiUrl = 'http://127.0.0.1:5000/chatbots';
 
   constructor(private http: HttpClient) {}
 
-  getChats(): Observable<Chat[]> {
-    return this.http.get<Chat[]>(this.apiUrl);
+  getChatbots(): Observable<Chatbot[]> {
+    return this.http.get<Chatbot[]>(this.apiUrl);
   }
 
-  getChat(id: string): Observable<Chat> {
+  getChatbot(id: string): Observable<Chatbot> {
     const url = `${this.apiUrl}/${id}`;
-    return this.http.get<Chat>(url);
+    return this.http.get<Chatbot>(url);
   }
 
-  addChat(book: Chat): Observable<Chat> {
+  addChatbot(book: Chatbot): Observable<Chatbot> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<Chat>(this.apiUrl, book, { headers });
+    return this.http.post<Chatbot>(this.apiUrl, book, { headers });
   }
 
-  updateChat(id: string, book: Chat): Observable<Chat> {
+  updateChatbot(id: string, book: Chatbot): Observable<Chatbot> {
     const url = `${this.apiUrl}/${id}`;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.put<Chat>(url, book, { headers });
+    return this.http.put<Chatbot>(url, book, { headers });
   }
 
-  deleteChat(id: string): Observable<void> {
+  deleteChatbot(id: string): Observable<void> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.delete<void>(url);
   }
 }
 
-export interface Chat {
+export interface Chatbot {
   _id?: string;
   name: string;
   operators: OperatorScript[];

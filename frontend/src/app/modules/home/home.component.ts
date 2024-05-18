@@ -2,7 +2,7 @@ import { Dialog } from '@angular/cdk/dialog';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIconComponent } from '@ng-icons/core';
-import { Chat } from '../../services/chatbot-api.service';
+import { Chatbot } from '../../services/chatbot-api.service';
 import { FlowchartService } from '../../services/flowchart.service';
 import { NewChatbotDialogComponent } from './new-flowchart-dialog/new-chatbot-dialog.component';
 
@@ -17,7 +17,7 @@ export class HomeComponent {
   flowchartService = inject(FlowchartService);
   dialog = inject(Dialog)
 
-  deleteChat(chat: Chat) {
+  deleteChat(chat: Chatbot) {
     if (confirm('Are you sure you want to delete this chat?')) {
       this.flowchartService.deleteChat(chat);
     }
