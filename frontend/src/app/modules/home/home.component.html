@@ -1,13 +1,12 @@
 <h1 class="text-xl font-bold">Chatbots</h1>
 <div class="grid">
-  <a
-    [routerLink]="['/flowchart', -1]"
-    target="_blank"
-    class="btn mb-.8 justify-self-end"
+  <button
+  class="btn mb-.8 justify-self-end"
+  (click)="_newChatDialog()"
   >
     <ng-icon size="1.6rem" name="lucidePlusCircle" />
     <span>New chatbot</span>
-  </a>
+  </button>
   <table>
     <thead>
       <tr>

@@ -1,0 +1,11 @@
+<div class="grid gap-y-1">
+  <h1 class="font-semibold">New chatbot</h1>
+  <div class="flex gap-x-.8">
+    <label for="chat-name">Name</label>
+    <input id="chat-name" class="grow px-.6 py-.2 outline-none rounded-s border-2 focus:border-blue-500" placeholder="Enter chatbot name" [(ngModel)]="name">
+  </div>
+  <div class="flex justify-end gap-x-.8">
+    <button class="btn" (click)="dialogRef.close()">Cancel</button>
+    <button class="btn" (click)="onSubmit()">Submit</button>
+  </div>
+</div>
