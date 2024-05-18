@@ -16,6 +16,7 @@ import Panzoom, { PanzoomObject } from '@panzoom/panzoom';
 import { ActivatedRoute } from '@angular/router';
 import { ChatComponent } from '../chat/chat.component';
 import { Chatbot, OperatorScript } from '../../core/models';
+import { ChatbotApiService } from '../../services/chatbot-api.service';
 
 const DEFAULT_CHAT: Chatbot = {
   _id: '-1',
@@ -33,6 +34,7 @@ const DEFAULT_CHAT: Chatbot = {
 export class FlowchartComponent implements AfterViewInit {
   flowchartService = inject(FlowchartService);
   route = inject(ActivatedRoute);
+  chatbotAPI = inject(ChatbotApiService);
 
   chatbot!: Chatbot;
   panzoomController!: PanzoomObject;

@@ -5,6 +5,7 @@ import { NgIconComponent } from '@ng-icons/core';
 import { FlowchartService } from '../../services/flowchart.service';
 import { NewChatbotDialogComponent } from './new-flowchart-dialog/new-chatbot-dialog.component';
 import { Chatbot } from '../../core/models';
+import { ChatbotApiService } from '../../services/chatbot-api.service';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +16,8 @@ import { Chatbot } from '../../core/models';
 })
 export class HomeComponent {
   flowchartService = inject(FlowchartService);
-  dialog = inject(Dialog)
+  dialog = inject(Dialog);
+  chatbotAPI = inject(ChatbotApiService);
 
   deleteChat(chat: Chatbot) {
     if (confirm('Are you sure you want to delete this chat?')) {
@@ -26,10 +28,6 @@ export class HomeComponent {
   _newChatDialog() {
     const dialogRef = this.dialog.open<string>(NewChatbotDialogComponent, {
       width: '250px',
-    });
-
-    dialogRef.closed.subscribe(result => {
-      console.log('The dialog was closed');
     });
   }
 }

@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Chatbot } from '../core/models';
 
@@ -7,9 +7,11 @@ import { Chatbot } from '../core/models';
   providedIn: 'root',
 })
 export class ChatbotApiService {
+  http = inject(HttpClient);
+
   private apiUrl = 'http://127.0.0.1:5000/chatbots';
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
   getChatbots(): Observable<Chatbot[]> {
     return this.http.get<Chatbot[]>(this.apiUrl);
@@ -20,15 +22,15 @@ export class ChatbotApiService {
     return this.http.get<Chatbot>(url);
   }
 
-  addChatbot(book: Chatbot): Observable<Chatbot> {
+  postChatbot(chatbot: Chatbot): Observable<Chatbot> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<Chatbot>(this.apiUrl, book, { headers });
+    return this.http.post<Chatbot>(this.apiUrl, chatbot, { headers });
   }
 
-  updateChatbot(id: string, book: Chatbot): Observable<Chatbot> {
+  putChatbot(id: string, chatbot: Chatbot): Observable<Chatbot> {
     const url = `${this.apiUrl}/${id}`;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.put<Chatbot>(url, book, { headers });
+    return this.http.put<Chatbot>(url, chatbot, { headers });
   }
 
   deleteChatbot(id: string): Observable<void> {
