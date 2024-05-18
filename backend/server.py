@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+import json
 
 app = Flask(__name__)
 
@@ -22,8 +23,14 @@ chatbots_collection = db['chatbots']
 # Route to get all chats
 @app.route('/chatbots', methods=['GET'])
 def get_chats():
-  chats = list(chatbots_collection.find({}, {'_id': False}))
-  return jsonify(chats)
+  chatbotDocuments = chatbots_collection.find()
+  document_list = []
+  for doc in chatbotDocuments:
+    doc['_id'] = str(doc['_id']) # Convert ObjectId to string
+    document_list.append(doc)
+
+  json_documents = json.dumps(document_list)
+  return jsonify(json_documents)
 
 # Route to get a chat by id
 @app.route('/chatbots/<string:chat_id>', methods=['GET'])

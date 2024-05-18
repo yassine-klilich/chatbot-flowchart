@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { Chatbot } from '../core/models';
 
 @Injectable({
@@ -14,9 +14,12 @@ export class ChatbotApiService {
   constructor() {}
 
   getChatbots(): Observable<Chatbot[]> {
-    return this.http.get<Chatbot[]>(this.apiUrl);
+    return this.http.get<string>(this.apiUrl).pipe(
+      map((result) => {
+        return JSON.parse(result);
+      })
+    );
   }
-
   getChatbot(id: string): Observable<Chatbot> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get<Chatbot>(url);

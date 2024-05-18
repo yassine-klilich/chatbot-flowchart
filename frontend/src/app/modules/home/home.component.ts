@@ -20,14 +20,17 @@ export class HomeComponent implements OnInit {
   chatbotAPI = inject(ChatbotApiService);
 
   ngOnInit(): void {
-    this.chatbotAPI.getChatbots().subscribe((result) => {
+    this.chatbotAPI.getChatbots().subscribe((result: Chatbot[]) => {
       this.flowchartService.chats = result;
     });
   }
 
-  deleteChat(chat: Chatbot) {
+  deleteChat(chatbot: Chatbot) {
     if (confirm('Are you sure you want to delete this chat?')) {
-      this.flowchartService.deleteChat(chat);
+      chatbot._id &&
+        this.chatbotAPI.deleteChatbot(chatbot._id).subscribe(() => {
+          this.flowchartService.deleteChat(chatbot);
+        });
     }
   }
 
