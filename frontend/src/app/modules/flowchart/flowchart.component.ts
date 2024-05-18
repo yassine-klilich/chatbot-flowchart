@@ -62,15 +62,11 @@ export class FlowchartComponent implements AfterViewInit {
     for (let i = 0; i < this.operators.length; i++) {
       const operator = this.operators.get(i);
       if (operator) {
-        operator.calculatePosition();
-        operator.connection = this.drawConnection(operator);
-        this.flowchartService.instance.revalidate(operator.host.nativeElement);
+        this.drawOperator(operator)
       }
     }
     this.flowchartService.changes.subscribe((newOperator) => {
-      newOperator.calculatePosition();
-      newOperator.connection = this.drawConnection(newOperator);
-      this.flowchartService.instance.revalidate(newOperator.host.nativeElement);
+      this.drawOperator(newOperator)
     });
     this.initPanZoom();
   }
@@ -148,6 +144,12 @@ export class FlowchartComponent implements AfterViewInit {
         this.panzoomController.zoomWithWheel(event);
       }
     );
+  }
+
+  drawOperator(operator: OperatorComponent): void {
+    operator.calculatePosition();
+    operator.connection = this.drawConnection(operator);
+    this.flowchartService.instance.revalidate(operator.host.nativeElement);
   }
 
   submit() {
