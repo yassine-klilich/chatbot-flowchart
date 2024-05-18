@@ -19,8 +19,6 @@ export class NewChatbotDialogComponent {
 
   name: string = '';
 
-  constructor() {}
-
   onSubmit() {
     if (!this.name) {
       alert('Name is required to create a new chatbot.');
