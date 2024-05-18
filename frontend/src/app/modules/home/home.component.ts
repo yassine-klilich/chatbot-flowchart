@@ -1,10 +1,10 @@
-import { Component, inject } from '@angular/core';
-import { FlowchartService } from '../../services/flowchart.service';
-import { NgIconComponent } from '@ng-icons/core';
-import { Chat } from '../../services/chat-api.service';
-import { RouterLink } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
-import { NewFlowchartDialogComponent } from './new-flowchart-dialog/new-flowchart-dialog.component';
+import { Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { NgIconComponent } from '@ng-icons/core';
+import { Chat } from '../../services/chatbot-api.service';
+import { FlowchartService } from '../../services/flowchart.service';
+import { NewChatbotDialogComponent } from './new-flowchart-dialog/new-chatbot-dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +24,7 @@ export class HomeComponent {
   }
 
   _newChatDialog() {
-    const dialogRef = this.dialog.open<string>(NewFlowchartDialogComponent, {
+    const dialogRef = this.dialog.open<string>(NewChatbotDialogComponent, {
       width: '250px',
     });
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BrowserJsPlumbInstance } from '@jsplumb/browser-ui';
 import { Subject } from 'rxjs';
-import { Chat } from './chat-api.service';
+import { Chat } from './chatbot-api.service';
 
 @Injectable({
   providedIn: 'root',

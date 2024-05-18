@@ -6,7 +6,7 @@ import { OperatorScript } from './flowchart.service';
 @Injectable({
   providedIn: 'root',
 })
-export class ChatApiService {
+export class ChatbotApiService {
   private apiUrl = 'http://127.0.0.1:5000/chats';
 
   constructor(private http: HttpClient) {}

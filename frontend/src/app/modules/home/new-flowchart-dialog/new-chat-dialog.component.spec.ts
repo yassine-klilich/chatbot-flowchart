@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NewFlowchartDialogComponent } from './new-flowchart-dialog.component';
+import { NewFlowchartDialogComponent } from './new-chatbot-dialog.component';
 
 describe('NewFlowchartDialogComponent', () => {
   let component: NewFlowchartDialogComponent;
@@ -11,7 +11,7 @@ describe('NewFlowchartDialogComponent', () => {
       imports: [NewFlowchartDialogComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(NewFlowchartDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
