@@ -10,13 +10,12 @@ import {
 import { Connection, newInstance } from '@jsplumb/browser-ui';
 import {
   FlowchartService,
-  OperatorScript,
 } from '../../services/flowchart.service';
 import { OperatorComponent } from './operator/operator.component';
 import Panzoom, { PanzoomObject } from '@panzoom/panzoom';
-import { Chatbot } from '../../services/chatbot-api.service';
 import { ActivatedRoute } from '@angular/router';
 import { ChatComponent } from '../chat/chat.component';
+import { Chatbot, OperatorScript } from '../../core/models';
 
 const DEFAULT_CHAT: Chatbot = {
   _id: '-1',

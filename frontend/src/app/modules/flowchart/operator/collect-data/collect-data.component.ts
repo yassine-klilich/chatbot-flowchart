@@ -1,9 +1,9 @@
 import { Component, Input, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgIconComponent } from '@ng-icons/core';
-import { OperatorScript } from '../../../../services/flowchart.service';
 import { FlowchartMenuComponent } from '../../flowchart-menu/flowchart-menu.component';
 import { OperatorComponent } from '../operator.component';
+import { OperatorScript } from '../../../../core/models';
 
 @Component({
   selector: 'app-collect-data',

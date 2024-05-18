@@ -2,9 +2,9 @@ import { Dialog } from '@angular/cdk/dialog';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIconComponent } from '@ng-icons/core';
-import { Chatbot } from '../../services/chatbot-api.service';
 import { FlowchartService } from '../../services/flowchart.service';
 import { NewChatbotDialogComponent } from './new-flowchart-dialog/new-chatbot-dialog.component';
+import { Chatbot } from '../../core/models';
 
 @Component({
   selector: 'app-home',

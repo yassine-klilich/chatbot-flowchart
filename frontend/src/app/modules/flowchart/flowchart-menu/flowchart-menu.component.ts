@@ -1,12 +1,9 @@
-import { Component, Input, inject } from '@angular/core';
-import {
-  FlowchartService,
-  OperatorType,
-} from '../../../services/flowchart.service';
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { TitleCasePipe } from '@angular/common';
-import { OperatorComponent } from '../operator/operator.component';
+import { Component, Input, inject } from '@angular/core';
+import { OperatorType } from '../../../core/models';
 import { FlowchartComponent } from '../flowchart.component';
+import { OperatorComponent } from '../operator/operator.component';
 
 let _countID: number = 0;
 
