@@ -99,18 +99,12 @@ export class FlowchartComponent implements AfterViewInit {
     const index = this.chat.operators.indexOf(operator);
     if (index > -1) {
       if (operator.parentOperator) {
-        const nextOperator = this.chat.operators.find(
-          (i) => i.parentOperator == operator._id
+        const nextOperatorComp = this.operators.find(
+          (wid) => wid.data.parentOperator == operator._id
         );
-        if (nextOperator) {
-          nextOperator.parentOperator = operator.parentOperator;
-          const nextOperatorComp = this.operators.find(
-            (wid) => wid.data._id == nextOperator._id
-          );
+        if (nextOperatorComp) {
+          nextOperatorComp.data.parentOperator = operator.parentOperator;
           if (nextOperatorComp && nextOperatorComp.connection) {
-            this.flowchartService.instance.deleteConnection(
-              nextOperatorComp.connection
-            );
             this.drawOperator(nextOperatorComp);
           }
         }
@@ -141,6 +135,9 @@ export class FlowchartComponent implements AfterViewInit {
   }
 
   drawOperator(operator: OperatorComponent): void {
+    if (operator.connection) {
+      this.flowchartService.instance.deleteConnection(operator.connection);
+    }
     operator.calculatePosition();
     operator.connection = this.drawConnection(operator);
     this.flowchartService.instance.revalidate(operator.host.nativeElement);

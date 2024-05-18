@@ -50,6 +50,7 @@ export class FlowchartService {
           data: {
             content: 'Hello there, how can I help you ?',
           },
+          parentOperator: '100'
         },
         {
           _id: '300',
@@ -58,6 +59,7 @@ export class FlowchartService {
           data: {
             content: 'Hello there, how can I help you ?',
           },
+          parentOperator: '200'
         },
       ],
     },
