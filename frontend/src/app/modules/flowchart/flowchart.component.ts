@@ -103,7 +103,6 @@ export class FlowchartComponent implements AfterViewInit {
           (i) => i.parentOperator == operator._id
         );
         if (nextOperator) {
-          //nextOperator.position = operator.position;
           nextOperator.parentOperator = operator.parentOperator;
           const nextOperatorComp = this.operators.find(
             (wid) => wid.data._id == nextOperator._id
@@ -112,12 +111,7 @@ export class FlowchartComponent implements AfterViewInit {
             this.flowchartService.instance.deleteConnection(
               nextOperatorComp.connection
             );
-            nextOperatorComp.connection = this.drawConnection(nextOperatorComp);
-            setTimeout(() => {
-              this.flowchartService.instance.revalidate(
-                nextOperatorComp.host.nativeElement
-              );
-            });
+            this.drawOperator(nextOperatorComp);
           }
         }
       }
