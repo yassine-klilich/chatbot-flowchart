@@ -16,12 +16,6 @@ import { ChatComponent } from '../chat/chat.component';
 import { Chatbot, OperatorScript } from '../../core/models';
 import { ChatbotApiService } from '../../services/chatbot-api.service';
 
-const DEFAULT_CHAT: Chatbot = {
-  _id: '-1',
-  name: 'Chat -1',
-  operators: [],
-};
-
 @Component({
   selector: 'app-flowchart',
   standalone: true,
@@ -53,7 +47,7 @@ export class FlowchartComponent implements AfterViewInit {
       const id = params['id'];
 
       this.chatbotAPI.getChatbot(id).subscribe((result: Chatbot) => {
-        this.chatbot = result || DEFAULT_CHAT;
+        this.chatbot = result;
       });
     });
   }
