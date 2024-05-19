@@ -4,15 +4,22 @@
 >
   <div class="bg-blue-200 px-1 py-.6">Chat name</div>
   <div class="p-1 flex flex-col gap-y-1 overflow-auto">
-    <div class="bot-msg bg-blue-100 rounded-s px-.8 py-.6">
+    @for (message of messageLog; track $index) {
+    <div class="user-msg bg-gray-100 rounded-s px-.8 py-.6">
+      {{ message.message }}
+    </div>
+    }
+    <!-- <div class="bot-msg bg-blue-100 rounded-s px-.8 py-.6">
       Hello, how are you?
     </div>
     <div class="user-msg bg-gray-100 rounded-s px-.8 py-.6">
-      I'm doing fine, thank you <3
-    </div>
+      I'm doing fine, thank you :)
+    </div> -->
   </div>
   <div class="p-1 pt-.6 flex gap-x-.8">
     <textarea
+      [(ngModel)]="textarea"
+      (keyup)="submitMessage($event)"
       class="border-2 border-gray-200 rounded-m focus:border-blue-500 outline-none grow px-.8 py-.6"
     ></textarea>
     <button class="btn">Send</button>
