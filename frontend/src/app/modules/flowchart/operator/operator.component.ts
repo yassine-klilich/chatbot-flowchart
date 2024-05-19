@@ -8,16 +8,14 @@ import {
 } from '@angular/core';
 import { MessageComponent } from './message/message.component';
 import { CollectDataComponent } from './collect-data/collect-data.component';
-import {
-  FlowchartService,
-} from '../../../services/flowchart.service';
+import { FlowchartService } from '../../../services/flowchart.service';
 import { Connection } from '@jsplumb/browser-ui';
 import { FlowchartMenuComponent } from '../flowchart-menu/flowchart-menu.component';
 import { NgIconComponent } from '@ng-icons/core';
 import { EndComponent } from './end/end.component';
 import { TitleCasePipe } from '@angular/common';
 import { FlowchartComponent } from '../flowchart.component';
-import { OperatorScript } from '../../../core/models';
+import { Operator } from '../../../core/models';
 
 @Component({
   selector: 'app-operator',
@@ -41,7 +39,7 @@ export class OperatorComponent {
   flowchartService = inject(FlowchartService);
   flowchartComponent = inject(FlowchartComponent);
 
-  @Input() data!: OperatorScript;
+  @Input() data!: Operator;
   @Output() onRemove = new EventEmitter<void>();
 
   connection?: Connection | null;

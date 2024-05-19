@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { NgIconComponent } from '@ng-icons/core';
 import { FlowchartMenuComponent } from '../../flowchart-menu/flowchart-menu.component';
 import { OperatorComponent } from '../operator.component';
-import { OperatorScript } from '../../../../core/models';
+import { Operator } from '../../../../core/models';
 
 @Component({
   selector: 'app-message',
@@ -14,5 +14,5 @@ import { OperatorScript } from '../../../../core/models';
 })
 export class MessageComponent {
   operatorComponent = inject(OperatorComponent);
-  @Input() data!: OperatorScript;
+  @Input() data!: Operator;
 }

@@ -2,7 +2,7 @@ import { Component, Input, inject } from '@angular/core';
 import { OperatorComponent } from '../operator.component';
 import { NgIconComponent } from '@ng-icons/core';
 import { FormsModule } from '@angular/forms';
-import { OperatorScript } from '../../../../core/models';
+import { Operator } from '../../../../core/models';
 
 @Component({
   selector: 'app-end',
@@ -13,5 +13,5 @@ import { OperatorScript } from '../../../../core/models';
 })
 export class EndComponent {
   operatorComponent = inject(OperatorComponent);
-  @Input() data!: OperatorScript;
+  @Input() data!: Operator;
 }

@@ -1,4 +1,4 @@
-export interface OperatorScript {
+export interface Operator {
   _id?: string;
   type: OperatorType;
   title: string;

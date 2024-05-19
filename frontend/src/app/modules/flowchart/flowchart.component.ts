@@ -13,7 +13,7 @@ import { OperatorComponent } from './operator/operator.component';
 import Panzoom, { PanzoomObject } from '@panzoom/panzoom';
 import { ActivatedRoute } from '@angular/router';
 import { ChatComponent } from '../chat/chat.component';
-import { Chatbot, OperatorScript } from '../../core/models';
+import { Chatbot, Operator } from '../../core/models';
 import { ChatbotApiService } from '../../services/chatbot-api.service';
 
 @Component({
@@ -95,11 +95,11 @@ export class FlowchartComponent implements AfterViewInit {
     return null;
   }
 
-  addOperator(operator: OperatorScript) {
+  addOperator(operator: Operator) {
     this.chatbot.operators.push(operator);
   }
 
-  onRemove(operator: OperatorScript) {
+  onRemove(operator: Operator) {
     const index = this.chatbot.operators.indexOf(operator);
     if (index > -1) {
       if (operator.parentOperator) {

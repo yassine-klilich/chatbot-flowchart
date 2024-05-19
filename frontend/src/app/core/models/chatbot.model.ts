@@ -1,7 +1,7 @@
-import { OperatorScript } from "./operator.model";
+import { Operator } from './operator.model';
 
 export interface Chatbot {
   _id?: string;
   name: string;
-  operators: OperatorScript[];
+  operators: Operator[];
 }
