@@ -28,6 +28,7 @@ export class FlowchartComponent implements AfterViewInit {
   route = inject(ActivatedRoute);
   chatbotAPI = inject(ChatbotApiService);
 
+  chatbotId!: string;
   chatbot!: Chatbot;
   panzoomController!: PanzoomObject;
 
@@ -44,25 +45,34 @@ export class FlowchartComponent implements AfterViewInit {
     }
 
     this.route.params.subscribe((params) => {
-      const id = params['id'];
+      this.chatbotId = params['id'];
 
-      this.chatbotAPI.getChatbot(id).subscribe((result: Chatbot) => {
-        this.chatbot = result;
-      });
+      this.chatbotAPI
+        .getChatbot(this.chatbotId)
+        .subscribe((result: Chatbot) => {
+          this.chatbot = result;
+          setTimeout(() => {
+            this.drawOperators();
+          });
+        });
     });
   }
 
   ngAfterViewInit(): void {
+    this.drawOperators();
+    this.flowchartService.changes.subscribe((newOperator) => {
+      this.drawOperator(newOperator);
+    });
+    this.initPanZoom();
+  }
+
+  drawOperators() {
     for (let i = 0; i < this.operators.length; i++) {
       const operator = this.operators.get(i);
       if (operator) {
         this.drawOperator(operator);
       }
     }
-    this.flowchartService.changes.subscribe((newOperator) => {
-      this.drawOperator(newOperator);
-    });
-    this.initPanZoom();
   }
 
   drawConnection(operator: OperatorComponent): Connection | null {
@@ -138,6 +148,10 @@ export class FlowchartComponent implements AfterViewInit {
   }
 
   submit() {
-    console.log(this.chatbot);
+    if (this.chatbot._id) {
+      this.chatbotAPI.putChatbot(this.chatbotId, this.chatbot).subscribe(() => {
+        alert('Chatbot saved successfuly');
+      });
+    }
   }
 }
