@@ -103,13 +103,18 @@ export class FlowchartComponent implements AfterViewInit {
     const index = this.chatbot.operators.indexOf(operator);
     if (index > -1) {
       if (operator.parentOperator) {
-        const nextOperatorComp = this.operators.find(
+        let nextOperatorComp = this.operators.find(
           (wid) => wid.data.parentOperator == operator._id
         );
         if (nextOperatorComp) {
           nextOperatorComp.data.parentOperator = operator.parentOperator;
-          if (nextOperatorComp && nextOperatorComp.connection) {
-            this.drawOperator(nextOperatorComp);
+          while (nextOperatorComp?.connection) {
+            if (nextOperatorComp && nextOperatorComp.connection) {
+              this.drawOperator(nextOperatorComp);
+            }
+            nextOperatorComp = this.operators.find(
+              (op) => op.data.parentOperator == nextOperatorComp?.data._id
+            );
           }
         }
       }
