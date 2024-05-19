@@ -1,12 +1,10 @@
+import { PromptMessage } from '../../modules/chat/chat.component';
+
 export interface Operator {
   _id?: string;
   type: OperatorType;
   title: string;
-  data: {
-    content: string;
-    prompt?: string;
-    validationAnswer?: string;
-  };
+  message: PromptMessage;
   parentOperator?: string;
 }
 

@@ -34,7 +34,7 @@ export class NewChatbotDialogComponent {
             _id: uuid(),
             type: 'message',
             title: '',
-            data: {
+            message: {
               content: 'Hello there :)',
             },
           },
