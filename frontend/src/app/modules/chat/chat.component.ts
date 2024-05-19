@@ -16,37 +16,19 @@ export class ChatComponent implements OnChanges {
   messageLog: Message[] = [];
 
   ngOnChanges(): void {
-    this.chatbot &&
-      this.chatbot.operators.forEach((operator) => {
-        switch (operator.type) {
-          case 'message':
-            {
-              this.messageLog.push({
-                sentBy: 'bot',
-                message: operator.message.content,
-              });
-            }
-            break;
+    if (this.chatbot) {
+      for (let i = 0; i < this.chatbot.operators.length; i++) {
+        const operator = this.chatbot.operators[i];
+        this.messageLog.push({
+          sentBy: 'bot',
+          message: operator.message.content,
+        });
 
-          case 'collect':
-            {
-              this.messageLog.push({
-                sentBy: 'bot',
-                message: operator.message.content,
-              });
-            }
-            break;
-
-          case 'end':
-            {
-              this.messageLog.push({
-                sentBy: 'bot',
-                message: operator.message.content,
-              });
-            }
-            break;
+        if (operator.type == 'collect') {
+          break;
         }
-      });
+      }
+    }
   }
 
   submitMessage(event: KeyboardEvent) {
