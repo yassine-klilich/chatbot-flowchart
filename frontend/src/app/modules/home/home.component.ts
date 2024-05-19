@@ -6,11 +6,12 @@ import { FlowchartService } from '../../services/flowchart.service';
 import { NewChatbotDialogComponent } from './new-flowchart-dialog/new-chatbot-dialog.component';
 import { Chatbot } from '../../core/models';
 import { ChatbotApiService } from '../../services/chatbot-api.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NgIconComponent, RouterLink],
+  imports: [NgIconComponent, RouterLink, FormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
@@ -38,5 +39,16 @@ export class HomeComponent implements OnInit {
     this.dialog.open<string>(NewChatbotDialogComponent, {
       width: '250px',
     });
+  }
+
+  onChangeChatbotName(chatbot: Chatbot) {
+    if (chatbot.name.trim().length > 0) {
+      chatbot._id &&
+        this.chatbotAPI
+          .updateChatbotName(chatbot._id, chatbot.name)
+          .subscribe(() => {
+            alert('Name updated successfuly');
+          });
+    }
   }
 }

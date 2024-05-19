@@ -1,9 +1,6 @@
 <h1 class="text-xl font-bold">Chatbots</h1>
 <div class="grid">
-  <button
-  class="btn mb-.8 justify-self-end"
-  (click)="_newChatDialog()"
-  >
+  <button class="btn mb-.8 justify-self-end" (click)="_newChatDialog()">
     <ng-icon size="1.6rem" name="lucidePlusCircle" />
     <span>New chatbot</span>
   </button>
@@ -16,7 +13,15 @@
     <tbody>
       @for (chat of flowchartService.chats; track chat) {
       <tr>
-        <td>{{ chat.name }}</td>
+        <td>
+          <input
+            type="text"
+            class="bg-transparent px-.4 rounded-s focus:outline-2 focus:outline-blue-500 focus:bg-white text-ellipsis"
+            title="{{ chat.name }}"
+            [(ngModel)]="chat.name"
+            (change)="onChangeChatbotName(chat)"
+          />
+        </td>
         <td class="w-[5rem]">
           <a [routerLink]="['/flowchart', chat._id]" target="_blank"
             ><ng-icon size="1.6rem" name="lucideWorkflow"

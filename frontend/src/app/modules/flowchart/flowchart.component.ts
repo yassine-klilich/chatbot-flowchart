@@ -148,7 +148,7 @@ export class FlowchartComponent implements AfterViewInit {
   }
 
   submit() {
-    if (this.chatbot._id) {
+    if (this.chatbotId) {
       this.chatbotAPI.putChatbot(this.chatbotId, this.chatbot).subscribe(() => {
         alert('Chatbot saved successfuly');
       });

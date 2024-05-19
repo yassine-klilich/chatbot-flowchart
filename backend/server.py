@@ -33,9 +33,9 @@ def get_chats():
   return jsonify(json_documents)
 
 # Route to get a chat by id
-@app.route('/chatbots/<string:chat_id>', methods=['GET'])
-def get_chat(chat_id):
-  chat = chatbots_collection.find_one({"_id": ObjectId(chat_id)}, {'_id': False})
+@app.route('/chatbots/<string:_id>', methods=['GET'])
+def get_chat(_id):
+  chat = chatbots_collection.find_one({"_id": ObjectId(_id)}, {'_id': False})
   if chat:
     return jsonify(chat)
   else:
@@ -54,23 +54,44 @@ def create_chat():
 
 
 # PUT endpoint to update a chat by ID
-@app.route('/chatbots/<string:chat_id>', methods=['PUT'])
-def update_chat(chat_id):
+@app.route('/chatbots/<string:_id>', methods=['PUT'])
+def update_chat(_id):
   updated_data = request.get_json()
   if not updated_data:
     return jsonify({'error': 'Invalid data'}), 400
   
-  result = chatbots_collection.update_one({"_id": ObjectId(chat_id)}, {"$set": updated_data})
+  result = chatbots_collection.update_one({"_id": ObjectId(_id)}, {"$set": updated_data})
   if result.matched_count:
-    updated_data['_id'] = chat_id
+    updated_data['_id'] = _id
     return jsonify(updated_data)
   else:
     return jsonify({'error': 'Chat not found'}), 404
 
+
+# PUT endpoint to update chat's name by ID
+@app.route('/chatbots/name/<string:_id>', methods=['PUT'])
+def update_name(id):
+  data = request.get_json()
+  new_name = data.get('name')
+  
+  if not new_name:
+    return jsonify({"error": "Name is required"}), 400
+  
+  # Update the document with the new name
+  result = chatbots_collection.update_one(
+    {"_id": ObjectId(id)},
+    {"$set": {"name": new_name}}
+  )
+  
+  if result.matched_count == 0:
+    return jsonify({"error": "Document not found"}), 404
+  
+  return jsonify({"message": "Name updated successfully"}), 200
+
 # DELETE endpoint to delete a chat by ID
-@app.route('/chatbots/<string:chat_id>', methods=['DELETE'])
-def delete_chat(chat_id):
-  result = chatbots_collection.delete_one({"_id": ObjectId(chat_id)})
+@app.route('/chatbots/<string:_id>', methods=['DELETE'])
+def delete_chat(_id):
+  result = chatbots_collection.delete_one({"_id": ObjectId(_id)})
   if result.deleted_count:
     return jsonify({'message': 'Chat deleted'}), 200
   else:
