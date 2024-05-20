@@ -12,6 +12,11 @@ cors = CORS(app, resources={
     "origins": ["http://localhost:4200"],
     "methods": ["GET", "POST", "PUT", "DELETE"],
     "allow_headers": ["Content-Type", "Authorization"]
+  },
+  r"/openai": {
+    "origins": ["http://localhost:4200"],
+    "methods": ["POST"],
+    "allow_headers": ["Content-Type", "Authorization"]
   }
 })
 
@@ -97,6 +102,14 @@ def delete_chat(_id):
   else:
     return jsonify({'error': 'Chat not found'}), 404
 
+  
+# DELETE endpoint to delete a chat by ID
+@app.route('/openai', methods=['POST'])
+def delete_chat():
+  data = request.get_json()
+  if not data:
+    return jsonify({'error': 'Invalid data'}), 400
+  
 
 if __name__ == '__main__':
     app.run(debug=True)
