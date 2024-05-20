@@ -1,4 +1,4 @@
-import { PromptMessage } from '../../modules/chat/chat.component';
+import { PromptMessage } from './prompt-message.model';
 
 export interface Operator {
   _id?: string;

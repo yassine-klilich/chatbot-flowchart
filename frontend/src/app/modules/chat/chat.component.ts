@@ -1,7 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Chatbot } from '../../core/models';
-import { CommonModule } from '@angular/common';
+import { Chatbot, Message } from '../../core/models';
 
 @Component({
   selector: 'app-chat',
@@ -56,15 +56,4 @@ export class ChatComponent implements OnChanges {
       }
     }
   }
-}
-
-export interface Message {
-  sentBy: 'bot' | 'user';
-  message: string | PromptMessage;
-}
-
-export interface PromptMessage {
-  content: string;
-  prompt?: string;
-  validationAnswer?: string;
 }
