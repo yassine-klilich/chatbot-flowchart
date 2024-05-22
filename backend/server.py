@@ -2,22 +2,23 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+from openai import OpenAI
 import json
 
 app = Flask(__name__)
 
 # CORS configuration with specific options
 cors = CORS(app, resources={
-  r"/chatbots/*": {
+  r"/api/*": {
     "origins": ["http://localhost:4200"],
     "methods": ["GET", "POST", "PUT", "DELETE"],
     "allow_headers": ["Content-Type", "Authorization"]
   },
-  r"/openai": {
+  r"/openai/*": {
     "origins": ["http://localhost:4200"],
     "methods": ["POST"],
     "allow_headers": ["Content-Type", "Authorization"]
-  }
+  },
 })
 
 # Connect to MongoDB
@@ -26,7 +27,7 @@ db = client['chat_flowchart']
 chatbots_collection = db['chatbots']
 
 # Route to get all chats
-@app.route('/chatbots', methods=['GET'])
+@app.route('/api', methods=['GET'])
 def get_chats():
   chatbotDocuments = chatbots_collection.find()
   document_list = []
@@ -38,7 +39,7 @@ def get_chats():
   return jsonify(json_documents)
 
 # Route to get a chat by id
-@app.route('/chatbots/<string:_id>', methods=['GET'])
+@app.route('/api/<string:_id>', methods=['GET'])
 def get_chat(_id):
   chat = chatbots_collection.find_one({"_id": ObjectId(_id)}, {'_id': False})
   if chat:
@@ -47,7 +48,7 @@ def get_chat(_id):
     return jsonify({'error': 'Chat not found'}), 404
 
 # Route to create a new chat
-@app.route('/chatbots', methods=['POST'])
+@app.route('/api', methods=['POST'])
 def create_chat():
   new_chat = request.get_json()
   if not new_chat:
@@ -59,7 +60,7 @@ def create_chat():
 
 
 # PUT endpoint to update a chat by ID
-@app.route('/chatbots/<string:_id>', methods=['PUT'])
+@app.route('/api/<string:_id>', methods=['PUT'])
 def update_chat(_id):
   updated_data = request.get_json()
   if not updated_data:
@@ -74,7 +75,7 @@ def update_chat(_id):
 
 
 # PUT endpoint to update chat's name by ID
-@app.route('/chatbots/name/<string:_id>', methods=['PUT'])
+@app.route('/api/name/<string:_id>', methods=['PUT'])
 def update_name(id):
   data = request.get_json()
   new_name = data.get('name')
@@ -94,7 +95,7 @@ def update_name(id):
   return jsonify({"message": "Name updated successfully"}), 200
 
 # DELETE endpoint to delete a chat by ID
-@app.route('/chatbots/<string:_id>', methods=['DELETE'])
+@app.route('/api/<string:_id>', methods=['DELETE'])
 def delete_chat(_id):
   result = chatbots_collection.delete_one({"_id": ObjectId(_id)})
   if result.deleted_count:
@@ -105,10 +106,19 @@ def delete_chat(_id):
   
 # DELETE endpoint to delete a chat by ID
 @app.route('/openai', methods=['POST'])
-def delete_chat():
+def openai():
   data = request.get_json()
   if not data:
     return jsonify({'error': 'Invalid data'}), 400
+  
+  client = OpenAI(
+    api_key="",
+  )
+  response = client.chat.completions.create(
+    model = "gpt-4-turbo",
+    messages = data.get('messages')
+  )
+  return response.choices[0].message.content
   
 
 if __name__ == '__main__':
