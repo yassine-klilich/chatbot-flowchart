@@ -1,5 +1,5 @@
 <div
-  class="w-[30rem] m-1 bg-white rounded-m overflow-hidden h-[35rem] grid grid-rows-[auto_1fr_auto]"
+  class="w-[30rem] m-1 bg-white rounded-m overflow-hidden h-[50rem] grid grid-rows-[auto_1fr_auto]"
   style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
 >
   <div class="bg-blue-200 px-1 py-.6">Chat name</div>
@@ -16,6 +16,7 @@
     </div>
     }
   </div>
+  @if (!endConversation) {
   <div class="p-1 pt-.6 flex gap-x-.8">
     <textarea
       [(ngModel)]="textarea"
@@ -25,4 +26,5 @@
     ></textarea>
     <button class="btn">Send</button>
   </div>
+  }
 </div>

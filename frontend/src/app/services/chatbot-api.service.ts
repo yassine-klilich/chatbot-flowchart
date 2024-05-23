@@ -15,7 +15,7 @@ export class ChatbotApiService {
 
   getChatbots(): Observable<Chatbot[]> {
     return this.http
-      .get<string>(this.apiUrl)
+      .get<string>(`${this.apiUrl}/api`)
       .pipe(map((result) => JSON.parse(result)));
   }
 

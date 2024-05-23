@@ -20,6 +20,7 @@ export class ChatComponent implements OnChanges {
   messageLog: Message[] = [];
   conversationIndex: number = 0;
   conversationHistory: OpenAIMessage[] = [];
+  endConversation: boolean = false;
 
   ngOnChanges(): void {
     if (this.chatbot) {
@@ -29,6 +30,7 @@ export class ChatComponent implements OnChanges {
 
   submitMessage(event: KeyboardEvent) {
     if (
+      !this.endConversation &&
       event.key == 'Enter' &&
       event.ctrlKey == true &&
       this.textarea.trim().length > 0
@@ -45,11 +47,11 @@ export class ChatComponent implements OnChanges {
         this.conversationHistory.push(
           {
             role: 'system',
-            content: `You are a helpful analysis sentiment tool.`,
+            content: `You are a helpful context checker tool.`,
           },
           {
             role: 'system',
-            content: `Read the 'question' property inside the JSON object and evaluate if the 'answer' property is sentimentally correct. Return a JSON object with two fields: 'valid' (a boolean indicating whether the sentiment of the 'answer' is appropriate given the sentiment of the 'question') and 'reason' (a string explaining why the 'answer' is or isn't sentimentally correct).`,
+            content: `Read the 'question' field from the JSON object and evaluate the 'answer' property if it is correct contextually with the question. Return a JSON object with two fields: 'valid' (a boolean indicating whether the context of the 'answer' is appropriate given the context of the 'question') and 'reason' (a string explaining why the 'answer' is or isn't contextually correct).`,
           },
           {
             role: 'user',
@@ -89,6 +91,10 @@ export class ChatComponent implements OnChanges {
       });
       ++this.conversationIndex;
 
+      if (operator.type == 'end') {
+        this.endConversation = true;
+        break;
+      }
       if (operator.type == 'collect') {
         break;
       }
