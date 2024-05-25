@@ -56,7 +56,7 @@ export class ChatComponent implements OnChanges {
           {
             role: 'user',
             content: JSON.stringify({
-              question: lastStopedOperator.message.content,
+              question: lastStopedOperator.script.content,
               answer: this.messageLog[this.messageLog.length - 1],
             }),
           }
@@ -70,7 +70,7 @@ export class ChatComponent implements OnChanges {
             } else {
               this.messageLog.push({
                 sentBy: 'bot',
-                message: lastStopedOperator.message.validationAnswer || '',
+                message: lastStopedOperator.script.validationAnswer || '',
               });
             }
           });
@@ -87,7 +87,7 @@ export class ChatComponent implements OnChanges {
       const operator = this.chatbot.operators[i];
       this.messageLog.push({
         sentBy: 'bot',
-        message: operator.message.content,
+        message: operator.script.content,
       });
       ++this.conversationIndex;
 

@@ -1,10 +1,10 @@
-import { PromptMessage } from './prompt-message.model';
+import { OperatorScript } from './operator-script.model';
 
 export interface Operator {
   _id?: string;
   type: OperatorType;
   title: string;
-  message: PromptMessage;
+  script: OperatorScript;
   parentOperator?: string;
 }
 

@@ -26,7 +26,7 @@ export class FlowchartMenuComponent {
       _id: uuid(),
       type: menu,
       title: '',
-      message: {
+      script: {
         content: '',
       },
       parentOperator: this.parent.data._id,

@@ -2,18 +2,31 @@
   <textarea
     placeholder="Type your message here."
     class="rounded-xs border border-gray-300 focus:outline-blue-500 py-.2 px-.6"
-    [(ngModel)]="data.message.content"
+    [(ngModel)]="data.script.content"
   ></textarea>
   <div class="relative">
     <textarea
       placeholder="Invalid answer message."
       class="rounded-xs border border-gray-300 focus:outline-blue-500 py-.2 px-.6 w-full"
-      [(ngModel)]="data.message.validationAnswer"
+      [(ngModel)]="data.script.validationAnswer"
     ></textarea>
     <ng-icon
       name="lucideInfo"
       class="absolute top-.6 right-.6 text-blue-600"
       title="Type your message in case of an invalid answer."
+    ></ng-icon>
+  </div>
+  <div class="relative">
+    <input
+      type="text"
+      placeholder="Variable name"
+      [(ngModel)]="operatorComponent.data.script.variable"
+      class="rounded-xs border border-gray-300 focus:outline-blue-500 py-.2 px-.6"
+    />
+    <ng-icon
+      name="lucideInfo"
+      class="absolute top-.6 right-.6 text-blue-600"
+      title="The inserted value will be stored in a variable, give it a name to be used using double query brackets."
     ></ng-icon>
   </div>
   <input
