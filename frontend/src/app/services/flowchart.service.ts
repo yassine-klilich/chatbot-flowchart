@@ -1,83 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BrowserJsPlumbInstance } from '@jsplumb/browser-ui';
 import { Subject } from 'rxjs';
-import { Chatbot, OperatorType } from '../core/models';
+import { Chatbot, Operator, OperatorType } from '../core/models';
+import { OperatorComponent } from '../modules/flowchart/operator/operator.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FlowchartService {
-  chats: Chatbot[] = [
-    // {
-    //   _id: '123',
-    //   name: 'Chat 001',
-    //   operators: [
-    //     {
-    //       _id: '100',
-    //       type: 'message',
-    //       title: '',
-    //       data: {
-    //         content: 'Hello there :)',
-    //       },
-    //     },
-    //     {
-    //       _id: '200',
-    //       type: 'message',
-    //       title: 'help',
-    //       data: {
-    //         content: 'How can I help you ?',
-    //       },
-    //       parentOperator: '100',
-    //     },
-    //   ],
-    // },
-    // {
-    //   _id: '456',
-    //   name: 'Chat 002',
-    //   operators: [
-    //     {
-    //       _id: '100',
-    //       type: 'message',
-    //       title: 'Welcome',
-    //       data: {
-    //         content: 'Hello there, how can I help you ?',
-    //       },
-    //     },
-    //     {
-    //       _id: '200',
-    //       type: 'collect',
-    //       title: 'Welcome',
-    //       data: {
-    //         content: 'Hello there, how can I help you ?',
-    //       },
-    //       parentOperator: '100'
-    //     },
-    //     {
-    //       _id: '300',
-    //       type: 'end',
-    //       title: 'Welcome',
-    //       data: {
-    //         content: 'Hello there, how can I help you ?',
-    //       },
-    //       parentOperator: '200'
-    //     },
-    //   ],
-    // },
-    // {
-    //   _id: '789',
-    //   name: 'Chat 003',
-    //   operators: [
-    //     {
-    //       _id: '100',
-    //       type: 'message',
-    //       title: 'Welcome',
-    //       data: {
-    //         content: 'Hello there, how can I help you ?',
-    //       },
-    //     },
-    //   ],
-    // },
-  ];
+  chats: Chatbot[] = [];
+  variables: Map<string, OperatorComponent> = new Map();
 
   instance!: BrowserJsPlumbInstance;
   changes: Subject<any> = new Subject();
@@ -95,5 +27,28 @@ export class FlowchartService {
     if (index > -1) {
       this.chats.splice(index, 1);
     }
+  }
+
+  appendVariable(variable: string, operator: OperatorComponent): boolean {
+    if (!/^[a-zA-Z_-]+$/.test(variable)) {
+      alert(
+        `Invalid variable name.\n Variable must contain only alphabets, dashes or underscores.`
+      );
+      return false;
+    }
+    const varOperator = this.variables.get(variable);
+    if (varOperator && varOperator != operator) {
+      alert(`Variable '${variable}' already exists.`);
+      return false;
+    }
+    if (varOperator) {
+      return false;
+    }
+    this.variables.set(variable, operator);
+    return true;
+  }
+
+  removeVariable(variable: string | undefined) {
+    variable && this.variables.delete(variable);
   }
 }
