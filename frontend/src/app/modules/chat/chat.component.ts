@@ -21,6 +21,7 @@ export class ChatComponent implements OnChanges {
   conversationIndex: number = 0;
   conversationHistory: OpenAIMessage[] = [];
   endConversation: boolean = false;
+  variables: Map<string, string> = new Map();
 
   ngOnChanges(): void {
     if (this.chatbot) {
@@ -57,7 +58,7 @@ export class ChatComponent implements OnChanges {
             role: 'user',
             content: JSON.stringify({
               question: lastStopedOperator.script.content,
-              answer: this.messageLog[this.messageLog.length - 1],
+              answer: this.messageLog[this.messageLog.length - 1].message,
             }),
           }
         );
@@ -66,6 +67,15 @@ export class ChatComponent implements OnChanges {
           .evaluateMessage(this.conversationHistory)
           .subscribe((response) => {
             if (response.valid == true) {
+              if (
+                lastStopedOperator.script.variable &&
+                this.variables.has(lastStopedOperator.script.variable)
+              ) {
+                this.variables.set(
+                  lastStopedOperator.script.variable,
+                  this.messageLog[this.messageLog.length - 1].message as string
+                );
+              }
               this.continueConversation();
             } else {
               this.messageLog.push({
@@ -87,7 +97,7 @@ export class ChatComponent implements OnChanges {
       const operator = this.chatbot.operators[i];
       this.messageLog.push({
         sentBy: 'bot',
-        message: operator.script.content,
+        message: this.setVariables(operator.script.content),
       });
       ++this.conversationIndex;
 
@@ -96,8 +106,24 @@ export class ChatComponent implements OnChanges {
         break;
       }
       if (operator.type == 'collect') {
+        if (operator.script.variable) {
+          this.variables.set(operator.script.variable, '');
+        }
         break;
       }
     }
+  }
+
+  setVariables(content: string): string {
+    const regex = /\{\{(.+?)\}\}/g;
+
+    return content.replace(regex, (match, key) => {
+      key = key.trim();
+      const varOperator = this.variables.get(key);
+      if (varOperator) {
+        return varOperator;
+      }
+      return match;
+    });
   }
 }
