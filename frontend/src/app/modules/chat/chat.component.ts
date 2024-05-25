@@ -51,7 +51,7 @@ export class ChatComponent implements OnChanges {
           },
           {
             role: 'system',
-            content: `Read the 'question' field from the JSON object and evaluate the 'answer' property if it is correct contextually with the question. Return a JSON object with two fields: 'valid' (a boolean indicating whether the context of the 'answer' is appropriate given the context of the 'question') and 'reason' (a string explaining why the 'answer' is or isn't contextually correct).`,
+            content: `Read the 'question' field from the JSON object and evaluate the 'answer' property if it is correct contextually with the question. Return a JSON object with one fields: 'valid' (a boolean indicating whether the context of the 'answer' is appropriate given the context of the 'question').`,
           },
           {
             role: 'user',
