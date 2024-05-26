@@ -39,16 +39,10 @@ export class CollectDataComponent implements OnInit {
     if (this.data.script.variable?.length === 0) {
       this.showVariableError = false;
     } else {
-      const hasError = this.showVariableError;
       this.showVariableError = !(
         this.data.script.variable &&
         /^[a-zA-Z_-]+$/.test(this.data.script.variable)
       );
-      if (hasError && !this.showVariableError) {
-        --this.flowchartComponent.errors;
-      } else if (!hasError && this.showVariableError) {
-        ++this.flowchartComponent.errors;
-      }
     }
   }
 
@@ -60,15 +54,20 @@ export class CollectDataComponent implements OnInit {
         this.operatorComponent
       );
       if (!valid) {
-        this.data.script.variable = this.previousVariableValue;
-        if (this.data.script.variable) {
-          this.flowchartService.appendVariable(
-            this.data.script.variable,
-            this.operatorComponent
-          );
-        }
+        this._resetVariable();
       }
     }
     this.previousVariableValue = this.data.script.variable;
+  }
+
+  private _resetVariable() {
+    this.showVariableError = false;
+    this.data.script.variable = this.previousVariableValue;
+    if (this.data.script.variable) {
+      this.flowchartService.appendVariable(
+        this.data.script.variable,
+        this.operatorComponent
+      );
+    }
   }
 }

@@ -31,7 +31,6 @@ export class FlowchartComponent implements AfterViewInit {
   chatbotId!: string;
   chatbot!: Chatbot;
   panzoomController!: PanzoomObject;
-  errors: number = 0;
 
   @ViewChild('flowchartContainer') container!: ElementRef;
   @ViewChildren(OperatorComponent) operators!: QueryList<OperatorComponent>;
@@ -154,9 +153,6 @@ export class FlowchartComponent implements AfterViewInit {
   }
 
   submit() {
-    if (this.errors > 0) {
-      return alert('Flowchart has some error!');
-    }
     if (this.chatbotId) {
       this.chatbotAPI.putChatbot(this.chatbotId, this.chatbot).subscribe(() => {
         alert('Chatbot saved successfuly');
