@@ -16,6 +16,7 @@ import { EndComponent } from './end/end.component';
 import { TitleCasePipe } from '@angular/common';
 import { FlowchartComponent } from '../flowchart.component';
 import { Operator } from '../../../core/models';
+import { ChoiceComponent } from './choice/choice.component';
 
 @Component({
   selector: 'app-operator',
@@ -25,6 +26,7 @@ import { Operator } from '../../../core/models';
     FlowchartMenuComponent,
     MessageComponent,
     CollectDataComponent,
+    ChoiceComponent,
     EndComponent,
     TitleCasePipe,
   ],

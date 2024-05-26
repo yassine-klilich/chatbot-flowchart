@@ -13,6 +13,5 @@ import { Operator } from '../../../../core/models';
   styleUrl: './message.component.css',
 })
 export class MessageComponent {
-  operatorComponent = inject(OperatorComponent);
   @Input() data!: Operator;
 }

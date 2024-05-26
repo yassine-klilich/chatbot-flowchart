@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BrowserJsPlumbInstance } from '@jsplumb/browser-ui';
 import { Subject } from 'rxjs';
-import { Chatbot, Operator, OperatorType } from '../core/models';
+import { Chatbot, OperatorType } from '../core/models';
 import { OperatorComponent } from '../modules/flowchart/operator/operator.component';
 
 @Injectable({
