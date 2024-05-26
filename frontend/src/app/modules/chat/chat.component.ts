@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges, inject } from '@angular/core';
+import { Component, OnInit, inject, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Chatbot, Message, OpenAIMessage } from '../../core/models';
 import { ChatbotApiService } from '../../services/chatbot-api.service';
@@ -11,10 +11,11 @@ import { ChatbotApiService } from '../../services/chatbot-api.service';
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
 })
-export class ChatComponent implements OnChanges {
-  apiChat = inject(ChatbotApiService);
+export class ChatComponent implements OnInit {
+  chatbotAPI = inject(ChatbotApiService);
 
-  @Input({ required: true }) chatbot!: Chatbot;
+  chatbotId = input<string>();
+  chatbot!: Chatbot;
 
   textarea: string = '';
   messageLog: Message[] = [];
@@ -24,9 +25,13 @@ export class ChatComponent implements OnChanges {
   variables: Map<string, string> = new Map();
   isBotTyping: boolean = false;
 
-  ngOnChanges(): void {
-    if (this.chatbot) {
-      this.continueConversation();
+  ngOnInit(): void {
+    const _id = this.chatbotId();
+    if (_id) {
+      this.chatbotAPI.getChatbot(_id).subscribe((result: Chatbot) => {
+        this.chatbot = result;
+        this.continueConversation();
+      });
     }
   }
 
@@ -65,7 +70,7 @@ export class ChatComponent implements OnChanges {
         );
 
         this.isBotTyping = true;
-        this.apiChat
+        this.chatbotAPI
           .evaluateMessage(this.conversationHistory)
           .subscribe((response) => {
             this.isBotTyping = false;
