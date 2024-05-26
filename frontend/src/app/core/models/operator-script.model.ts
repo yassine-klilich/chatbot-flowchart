@@ -4,5 +4,5 @@ export interface OperatorScript {
   content: string;
   validationAnswer?: string;
   variable?: string;
-  options?: ChoiceOption[];
+  value?: string;
 }

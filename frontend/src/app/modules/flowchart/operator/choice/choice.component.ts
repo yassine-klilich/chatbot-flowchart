@@ -1,7 +1,9 @@
-import { Component, Input, OnInit, input } from '@angular/core';
+import { Component, Input, OnInit, inject, input } from '@angular/core';
 import { Operator } from '../../../../core/models';
 import { FormsModule } from '@angular/forms';
 import { NgIconComponent } from '@ng-icons/core';
+import { FlowchartComponent } from '../../flowchart.component';
+import { uuid } from '@jsplumb/browser-ui';
 
 @Component({
   selector: 'app-choice',
@@ -12,28 +14,25 @@ import { NgIconComponent } from '@ng-icons/core';
 })
 export class ChoiceComponent implements OnInit {
   @Input() data!: Operator;
+  flowchartComponent = inject(FlowchartComponent);
+  private _optionsCounter: number = 0;
 
-  ngOnInit(): void {
-    if (!this.data.script.options) {
-      this.data.script.options = [];
-    }
-  }
+  ngOnInit(): void {}
 
   addOption() {
-    this.data.script.options?.push({
-      label: 'Choice ' + this.data.script.options.length,
-      value: '',
+    this.flowchartComponent.addOperator({
+      _id: uuid(),
+      type: 'option',
+      title: 'Option ' + this._optionsCounter++,
+      script: {
+        content: '',
+        value: '',
+      },
+      parentOperator: this.data._id,
     });
   }
 
-  deleteOption(option: ChoiceOption) {
-    if (this.data.script.options) {
-      const index = this.data.script.options?.indexOf(option);
-      if (index > -1) {
-        this.data.script.options.splice(index, 1);
-      }
-    }
-  }
+  deleteOption(option: ChoiceOption) {}
 }
 
 export interface ChoiceOption {

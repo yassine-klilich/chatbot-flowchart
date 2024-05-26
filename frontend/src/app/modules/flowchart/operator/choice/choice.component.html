@@ -10,7 +10,7 @@
     class="rounded-xs border border-gray-300 focus:outline-blue-500 py-.2 px-.6"
     [(ngModel)]="data.title"
   />
-  @for (option of data.script.options; track option) {
+  <!-- @for (option of data.script.options; track option) {
   <div class="flex gap-x-.6 items-center">
     <input
       type="text"
@@ -21,7 +21,7 @@
       <ng-icon size="1.6rem" name="lucideTrash2" color="red" />
     </button>
   </div>
-  }
+  } -->
   <button class="btn self-start" (click)="addOption()">
     <ng-icon size="1.6rem" name="lucidePlusCircle" />
     <span>Add option</span>

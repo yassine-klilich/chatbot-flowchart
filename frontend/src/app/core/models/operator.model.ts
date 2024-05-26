@@ -12,6 +12,7 @@ export type OperatorType =
   | 'message'
   | 'collect'
   | 'choice'
+  | 'option'
   | 'api'
   | 'assistant'
   | 'end';

@@ -17,7 +17,8 @@ export class FlowchartService {
   readonly operatorTypes: Record<OperatorType, OperatorType[]> = {
     message: ['message', 'collect', 'choice', 'end'],
     collect: ['message', 'collect', 'choice', 'end'],
-    choice: ['message', 'collect', 'choice', 'end'],
+    choice: [],
+    option: ['message', 'collect', 'choice', 'end'],
     api: [],
     assistant: [],
     end: [],
