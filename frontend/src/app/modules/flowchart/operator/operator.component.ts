@@ -1,3 +1,4 @@
+import { TitleCasePipe } from '@angular/common';
 import {
   Component,
   ElementRef,
@@ -6,17 +7,17 @@ import {
   Output,
   inject,
 } from '@angular/core';
-import { MessageComponent } from './message/message.component';
-import { CollectDataComponent } from './collect-data/collect-data.component';
-import { FlowchartService } from '../../../services/flowchart.service';
 import { Connection } from '@jsplumb/browser-ui';
-import { FlowchartMenuComponent } from '../flowchart-menu/flowchart-menu.component';
 import { NgIconComponent } from '@ng-icons/core';
-import { EndComponent } from './end/end.component';
-import { TitleCasePipe } from '@angular/common';
-import { FlowchartComponent } from '../flowchart.component';
 import { Operator } from '../../../core/models';
+import { FlowchartService } from '../../../services/flowchart.service';
+import { FlowchartMenuComponent } from '../flowchart-menu/flowchart-menu.component';
+import { FlowchartComponent } from '../flowchart.component';
 import { ChoiceComponent } from './choice/choice.component';
+import { OptionComponent } from './choice/option/option.component';
+import { CollectDataComponent } from './collect-data/collect-data.component';
+import { EndComponent } from './end/end.component';
+import { MessageComponent } from './message/message.component';
 
 @Component({
   selector: 'app-operator',
@@ -27,6 +28,7 @@ import { ChoiceComponent } from './choice/choice.component';
     MessageComponent,
     CollectDataComponent,
     ChoiceComponent,
+    OptionComponent,
     EndComponent,
     TitleCasePipe,
   ],

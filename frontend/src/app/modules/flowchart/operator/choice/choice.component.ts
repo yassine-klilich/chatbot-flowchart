@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { NgIconComponent } from '@ng-icons/core';
 import { FlowchartComponent } from '../../flowchart.component';
 import { uuid } from '@jsplumb/browser-ui';
+import { OptionComponent } from './option/option.component';
+import { FlowchartService } from '../../../../services/flowchart.service';
 
 @Component({
   selector: 'app-choice',
@@ -15,9 +17,17 @@ import { uuid } from '@jsplumb/browser-ui';
 export class ChoiceComponent implements OnInit {
   @Input() data!: Operator;
   flowchartComponent = inject(FlowchartComponent);
+  flowchartService = inject(FlowchartService);
   private _optionsCounter: number = 0;
+  options!: OptionComponent[];
 
-  ngOnInit(): void {}
+  constructor() {}
+
+  ngOnInit(): void {
+    this.options = this.flowchartComponent.operators.filter(
+      (o) => o.data.parentOperator == this.data._id
+    );
+  }
 
   addOption() {
     this.flowchartComponent.addOperator({

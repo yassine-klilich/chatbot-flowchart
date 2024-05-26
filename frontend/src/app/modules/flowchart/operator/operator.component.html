@@ -16,7 +16,9 @@
     <app-collect-data #operator [data]="data" />
     } @case ('choice') {
     <app-choice #operator [data]="data" />
-    } @case ('end') {
+    } @case ('option') {
+    <app-option #operator [data]="data" />
+    }@case ('end') {
     <app-end #operator [data]="data" />
     } }
   </div>
