@@ -30,14 +30,9 @@ chatbots_collection = db['chatbots']
 # Route to get all chats
 @app.route('/api', methods=['GET'])
 def get_chats():
-  chatbotDocuments = chatbots_collection.find()
-  document_list = []
-  for doc in chatbotDocuments:
-    doc['_id'] = str(doc['_id']) # Convert ObjectId to string
-    document_list.append(doc)
-
-  json_documents = json.dumps(document_list)
-  return jsonify(json_documents)
+    chatbotDocuments = chatbots_collection.find({}, {'operators': 0})
+    document_list = [{**doc, '_id': str(doc['_id'])} for doc in chatbotDocuments]
+    return jsonify(document_list)
 
 # Route to get a chat by id
 @app.route('/api/<string:_id>', methods=['GET'])
