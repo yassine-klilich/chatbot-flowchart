@@ -6,8 +6,6 @@ import { FlowchartComponent } from '../flowchart.component';
 import { OperatorComponent } from '../operator/operator.component';
 import { uuid } from '@jsplumb/browser-ui';
 
-let _countID: number = 0;
-
 @Component({
   selector: 'app-flowchart-menu',
   standalone: true,
