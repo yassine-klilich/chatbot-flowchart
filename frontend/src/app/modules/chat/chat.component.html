@@ -6,13 +6,17 @@
   <div class="p-1 flex flex-col gap-y-1 overflow-auto">
     @for (message of messageLog; track $index) {
     <div
-      class="user-msg bg-gray-100 rounded-s px-.8 py-.6"
+      class="rounded-s px-.8 py-.6"
       [ngClass]="{
         'bg-blue-100': message.sentBy == 'bot',
         'bg-gray-100': message.sentBy == 'user'
       }"
     >
       {{ message.message }}
+    </div>
+    } @if (isBotTyping) {
+    <div class="bg-blue-100 rounded-s px-.8 py-.8 self-start w-[5.6rem]">
+      <div class="dot-flashing"></div>
     </div>
     }
   </div>

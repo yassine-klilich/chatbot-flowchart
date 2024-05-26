@@ -22,6 +22,7 @@ export class ChatComponent implements OnChanges {
   conversationHistory: OpenAIMessage[] = [];
   endConversation: boolean = false;
   variables: Map<string, string> = new Map();
+  isBotTyping: boolean = false;
 
   ngOnChanges(): void {
     if (this.chatbot) {
@@ -63,9 +64,11 @@ export class ChatComponent implements OnChanges {
           }
         );
 
+        this.isBotTyping = true;
         this.apiChat
           .evaluateMessage(this.conversationHistory)
           .subscribe((response) => {
+            this.isBotTyping = false;
             if (response.valid == true) {
               if (
                 lastStopedOperator.script.variable &&
