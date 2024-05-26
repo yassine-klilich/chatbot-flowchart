@@ -8,4 +8,10 @@ export interface Operator {
   parentOperator?: string;
 }
 
-export type OperatorType = 'message' | 'collect' | 'api' | 'assistant' | 'end';
+export type OperatorType =
+  | 'message'
+  | 'collect'
+  | 'choice'
+  | 'api'
+  | 'assistant'
+  | 'end';
