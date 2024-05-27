@@ -35,6 +35,7 @@ export class ChoiceComponent implements OnInit {
       this.options = this.flowchartComponent.operators.filter(
         (o) => o.data.parentOperator == this.data._id
       );
+      this._optionsCounter = this.options.length;
       this.cdr.detectChanges();
     });
   }
