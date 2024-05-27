@@ -11,7 +11,7 @@ import { NgIconComponent } from '@ng-icons/core';
 import { Operator } from '../../../../core/models';
 import { FlowchartService } from '../../../../services/flowchart.service';
 import { FlowchartComponent } from '../../flowchart.component';
-import { OptionComponent } from './option/option.component';
+import { OperatorComponent } from '../operator.component';
 
 @Component({
   selector: 'app-choice',
@@ -21,14 +21,15 @@ import { OptionComponent } from './option/option.component';
   styleUrl: './choice.component.css',
 })
 export class ChoiceComponent implements OnInit {
-  @Input() data!: Operator;
   flowchartComponent = inject(FlowchartComponent);
   flowchartService = inject(FlowchartService);
+  operatorComp = inject(OperatorComponent);
   cdr = inject(ChangeDetectorRef);
-  private _optionsCounter: number = 0;
-  options!: OptionComponent[];
 
-  constructor() {}
+  @Input() data!: Operator;
+
+  options!: OperatorComponent[];
+  private _optionsCounter: number = 0;
 
   ngOnInit(): void {
     this.flowchartComponent.operators.changes.subscribe((e) => {
@@ -36,7 +37,37 @@ export class ChoiceComponent implements OnInit {
         (o) => o.data.parentOperator == this.data._id
       );
       this._optionsCounter = this.options.length;
+      this.setOptionsPosition();
       this.cdr.detectChanges();
+    });
+  }
+
+  setOptionsPosition() {
+    let spaceBetweenOptions = 30;
+    let totalWidthOfOptions =
+      this.options.reduce((total, option) => {
+        const { width } = getComputedStyle(option.host.nativeElement);
+        return total + parseInt(width);
+      }, 0) +
+      (this.options.length - 1) * spaceBetweenOptions;
+
+    const { top, left, height, width } = getComputedStyle(
+      this.operatorComp.host.nativeElement
+    );
+
+    this.options.forEach((option, index) => {
+      let _left =
+        parseInt(left) + parseFloat(width) / 2 - totalWidthOfOptions / 2;
+
+      const { width: optionWidth } = getComputedStyle(
+        option.host.nativeElement
+      );
+
+      option.setPosition(
+        parseInt(top) + parseInt(height) + 80,
+        _left + index * (parseInt(optionWidth) + spaceBetweenOptions)
+      );
+      this.flowchartService.instance.revalidate(option.host.nativeElement);
     });
   }
 

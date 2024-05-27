@@ -5,6 +5,7 @@ import {
   EventEmitter,
   Input,
   Output,
+  ViewChild,
   inject,
 } from '@angular/core';
 import { Connection } from '@jsplumb/browser-ui';
@@ -46,6 +47,7 @@ export class OperatorComponent {
   @Input() data!: Operator;
   @Output() onRemove = new EventEmitter<void>();
 
+  @ViewChild('operator') operatorComp!: any;
   connection?: Connection | null;
 
   ngAfterViewInit() {
@@ -91,8 +93,11 @@ export class OperatorComponent {
         this.setPosition(parseInt(top) + parseInt(height) + 30, parseInt(left));
       }
     } else {
+      const flowchartContainer = document.getElementById('#flowchartContainer');
+
       this.host.nativeElement.style.top = '48px';
-      this.host.nativeElement.style.left = '188px';
+      this.host.nativeElement.style.left =
+        (flowchartContainer?.offsetWidth || 2500) / 2 + 'px';
     }
   }
 }

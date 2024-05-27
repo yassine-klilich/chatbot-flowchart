@@ -133,6 +133,7 @@ export class FlowchartComponent implements AfterViewInit {
       maxScale: 2,
       contain: 'outside',
       excludeClass: 'operator',
+      startX: -1100,
     });
 
     this.container.nativeElement.addEventListener(
@@ -147,9 +148,11 @@ export class FlowchartComponent implements AfterViewInit {
     if (operator.connection) {
       this.flowchartService.instance.deleteConnection(operator.connection);
     }
-    operator.calculatePosition();
-    operator.connection = this.drawConnection(operator);
-    this.flowchartService.instance.revalidate(operator.host.nativeElement);
+    if (operator.data.type != 'option') {
+      operator.calculatePosition();
+      operator.connection = this.drawConnection(operator);
+      this.flowchartService.instance.revalidate(operator.host.nativeElement);
+    }
   }
 
   submit() {
