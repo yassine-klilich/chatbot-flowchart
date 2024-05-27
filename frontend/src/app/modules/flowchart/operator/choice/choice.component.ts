@@ -1,11 +1,17 @@
-import { Component, Input, OnInit, inject, input } from '@angular/core';
-import { Operator } from '../../../../core/models';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgIconComponent } from '@ng-icons/core';
-import { FlowchartComponent } from '../../flowchart.component';
 import { uuid } from '@jsplumb/browser-ui';
-import { OptionComponent } from './option/option.component';
+import { NgIconComponent } from '@ng-icons/core';
+import { Operator } from '../../../../core/models';
 import { FlowchartService } from '../../../../services/flowchart.service';
+import { FlowchartComponent } from '../../flowchart.component';
+import { OptionComponent } from './option/option.component';
 
 @Component({
   selector: 'app-choice',
@@ -18,15 +24,19 @@ export class ChoiceComponent implements OnInit {
   @Input() data!: Operator;
   flowchartComponent = inject(FlowchartComponent);
   flowchartService = inject(FlowchartService);
+  cdr = inject(ChangeDetectorRef);
   private _optionsCounter: number = 0;
   options!: OptionComponent[];
 
   constructor() {}
 
   ngOnInit(): void {
-    this.options = this.flowchartComponent.operators.filter(
-      (o) => o.data.parentOperator == this.data._id
-    );
+    this.flowchartComponent.operators.changes.subscribe((e) => {
+      this.options = this.flowchartComponent.operators.filter(
+        (o) => o.data.parentOperator == this.data._id
+      );
+      this.cdr.detectChanges();
+    });
   }
 
   addOption() {

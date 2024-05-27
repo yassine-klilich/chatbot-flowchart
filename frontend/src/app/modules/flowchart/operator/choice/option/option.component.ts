@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Operator } from '../../../../../core/models';
 import { FormsModule } from '@angular/forms';
+import { Operator } from '../../../../../core/models';
 
 @Component({
   selector: 'app-option',
