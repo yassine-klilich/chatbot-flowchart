@@ -15,6 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ChatComponent } from '../chat/chat.component';
 import { Chatbot, Operator } from '../../core/models';
 import { ChatbotApiService } from '../../services/chatbot-api.service';
+import { ChoiceComponent } from './operator/choice/choice.component';
 
 @Component({
   selector: 'app-flowchart',
@@ -59,7 +60,6 @@ export class FlowchartComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.drawOperators();
     this.flowchartService.changes.subscribe((newOperator) => {
       this.drawOperator(newOperator);
     });
@@ -145,10 +145,17 @@ export class FlowchartComponent implements AfterViewInit {
   }
 
   drawOperator(operator: OperatorComponent): void {
-    if (operator.connection) {
-      this.flowchartService.instance.deleteConnection(operator.connection);
-    }
-    if (operator.data.type != 'option') {
+    if (operator.data.type == 'option') {
+      const choiceOp = this.operators.find(
+        (o) => o.data._id == operator.data.parentOperator
+      );
+      if (choiceOp) {
+        (choiceOp.operatorComp as ChoiceComponent).setOptionsPosition();
+      }
+    } else {
+      if (operator.connection) {
+        this.flowchartService.instance.deleteConnection(operator.connection);
+      }
       operator.calculatePosition();
       operator.connection = this.drawConnection(operator);
       this.flowchartService.instance.revalidate(operator.host.nativeElement);

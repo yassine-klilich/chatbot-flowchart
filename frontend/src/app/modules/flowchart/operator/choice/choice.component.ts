@@ -43,8 +43,8 @@ export class ChoiceComponent implements OnInit {
   }
 
   setOptionsPosition() {
-    let spaceBetweenOptions = 30;
-    let totalWidthOfOptions =
+    const spaceBetweenOptions = 40;
+    const totalWidthOfOptions =
       this.options.reduce((total, option) => {
         const { width } = getComputedStyle(option.host.nativeElement);
         return total + parseInt(width);
@@ -56,7 +56,10 @@ export class ChoiceComponent implements OnInit {
     );
 
     this.options.forEach((option, index) => {
-      let _left =
+      if (option.connection) {
+        this.flowchartService.instance.deleteConnection(option.connection);
+      }
+      const _left =
         parseInt(left) + parseFloat(width) / 2 - totalWidthOfOptions / 2;
 
       const { width: optionWidth } = getComputedStyle(
@@ -67,6 +70,7 @@ export class ChoiceComponent implements OnInit {
         parseInt(top) + parseInt(height) + 80,
         _left + index * (parseInt(optionWidth) + spaceBetweenOptions)
       );
+      option.connection = this.flowchartComponent.drawConnection(option);
       this.flowchartService.instance.revalidate(option.host.nativeElement);
     });
   }
