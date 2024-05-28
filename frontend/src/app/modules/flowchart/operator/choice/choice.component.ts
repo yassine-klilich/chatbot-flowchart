@@ -79,10 +79,9 @@ export class ChoiceComponent implements OnInit {
     this.flowchartComponent.addOperator({
       _id: uuid(),
       type: 'option',
-      title: 'Option ' + this._optionsCounter++,
+      title: '',
       script: {
-        content: '',
-        value: '',
+        content: 'Option ' + ++this._optionsCounter,
       },
       parentOperator: this.data._id,
     });
