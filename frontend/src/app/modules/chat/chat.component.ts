@@ -24,15 +24,43 @@ export class ChatComponent implements OnInit {
   endConversation: boolean = false;
   variables: Map<string, string> = new Map();
   isBotTyping: boolean = false;
+  chatFlow: any;
+  currentOperator: any;
 
   ngOnInit(): void {
     const _id = this.chatbotId();
     if (_id) {
       this.chatbotAPI.getChatbot(_id).subscribe((result: Chatbot) => {
         this.chatbot = result;
+        this.chatFlow = this.buildChatFlow();
+        this.currentOperator = this.chatFlow;
+
+        // this.startingPoint = this.chatFlow
         this.continueConversation();
       });
     }
+  }
+
+  buildChatFlow() {
+    const map = new Map();
+    let root = null;
+
+    this.chatbot.operators.forEach((item) => {
+      map.set(item._id, { ...item, children: [] });
+    });
+
+    this.chatbot.operators.forEach((item) => {
+      if (item.parentOperator != null) {
+        const parent = map.get(item.parentOperator);
+        if (parent) {
+          parent.children.push(map.get(item._id));
+        }
+      } else {
+        root = map.get(item._id);
+      }
+    });
+
+    return root;
   }
 
   submitMessage(event: KeyboardEvent) {
@@ -45,10 +73,10 @@ export class ChatComponent implements OnInit {
       this.messageLog.push({
         sentBy: 'user',
         message: this.textarea.trim(),
+        type: 'none',
       });
       this.textarea = '';
-      const lastStopedOperator =
-        this.chatbot.operators[this.conversationIndex - 1];
+      const lastStopedOperator = this.currentOperator;
       if (lastStopedOperator.type == 'collect') {
         this.conversationHistory = [];
         this.conversationHistory.push(
@@ -84,11 +112,13 @@ export class ChatComponent implements OnInit {
                   this.messageLog[this.messageLog.length - 1].message as string
                 );
               }
+              this.nextOperator();
               this.continueConversation();
             } else {
               this.messageLog.push({
                 sentBy: 'bot',
                 message: lastStopedOperator.script.validationAnswer || '',
+                type: lastStopedOperator.type,
               });
             }
           });
@@ -96,19 +126,18 @@ export class ChatComponent implements OnInit {
     }
   }
 
+  nextOperator() {
+    this.currentOperator = this.currentOperator.children[0];
+  }
+
   continueConversation() {
-    for (
-      let i = this.conversationIndex;
-      i < this.chatbot.operators.length;
-      i++
-    ) {
-      const operator = this.chatbot.operators[i];
+    while (this.currentOperator != null) {
+      const operator = this.currentOperator;
       this.messageLog.push({
         sentBy: 'bot',
         message: this.setVariables(operator.script.content),
+        type: operator.type,
       });
-      ++this.conversationIndex;
-
       if (operator.type == 'end') {
         this.endConversation = true;
         break;
@@ -119,6 +148,8 @@ export class ChatComponent implements OnInit {
         }
         break;
       }
+      this.nextOperator();
+      console.log('loooop');
     }
   }
 
