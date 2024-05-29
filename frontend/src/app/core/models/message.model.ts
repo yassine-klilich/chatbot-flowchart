@@ -5,4 +5,5 @@ export interface Message {
   sentBy: 'bot' | 'user';
   message: string | OperatorScript;
   type: OperatorType | 'none';
+  data?: any;
 }

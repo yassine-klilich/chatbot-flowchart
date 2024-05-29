@@ -86,6 +86,7 @@ export class ChatComponent implements OnInit {
           },
           {
             role: 'system',
+            // content: `Read the 'question' field from the JSON object and evaluate the 'answer' property if it is correct contextually with the question. Return a JSON object with two fields: 'valid' (a boolean indicating whether the context of the 'answer' is appropriate given the context of the 'question') and 'reason' (a string explaining why the 'answer' is or isn't contextually correct).`,
             content: `Read the 'question' field from the JSON object and evaluate the 'answer' property if it is correct contextually with the question. Return a JSON object with one fields: 'valid' (a boolean indicating whether the context of the 'answer' is appropriate given the context of the 'question').`,
           },
           {
@@ -132,19 +133,27 @@ export class ChatComponent implements OnInit {
 
   continueConversation() {
     while (this.currentOperator != null) {
-      const operator = this.currentOperator;
+      if (this.currentOperator.type == 'choice') {
+        this.messageLog.push({
+          sentBy: 'bot',
+          message: this.setVariables(this.currentOperator.script.content),
+          type: this.currentOperator.type,
+          data: { options: this.currentOperator.children },
+        });
+        break;
+      }
       this.messageLog.push({
         sentBy: 'bot',
-        message: this.setVariables(operator.script.content),
-        type: operator.type,
+        message: this.setVariables(this.currentOperator.script.content),
+        type: this.currentOperator.type,
       });
-      if (operator.type == 'end') {
+      if (this.currentOperator.type == 'end') {
         this.endConversation = true;
         break;
       }
-      if (operator.type == 'collect') {
-        if (operator.script.variable) {
-          this.variables.set(operator.script.variable, '');
+      if (this.currentOperator.type == 'collect') {
+        if (this.currentOperator.script.variable) {
+          this.variables.set(this.currentOperator.script.variable, '');
         }
         break;
       }
