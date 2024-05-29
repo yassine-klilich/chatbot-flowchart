@@ -11,6 +11,7 @@
       <div class="flex flex-col gap-y-.6 mt-.6">
         @for (option of message.data.options; track $index) {
         <button
+          (click)="optionClicked(option)"
           class="px-1 py-.6 bg-blue-50 rounded-m border border-blue-200 outline-none hover:bg-blue-200"
         >
           {{ option.script.content }}

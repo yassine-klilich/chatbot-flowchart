@@ -63,72 +63,124 @@ export class ChatComponent implements OnInit {
     return root;
   }
 
-  submitMessage(event: KeyboardEvent) {
-    if (
+  submitMessage(event: KeyboardEvent): void {
+    if (this.isMessageSubmissionValid(event)) {
+      this.addUserMessage();
+      if (this.currentOperator.type === 'choice') {
+        this.handleChoiceOperator();
+      } else {
+        this.handleNonChoiceOperator();
+      }
+      this.textarea = '';
+    }
+  }
+
+  private isMessageSubmissionValid(event: KeyboardEvent): boolean {
+    return (
       !this.endConversation &&
-      event.key == 'Enter' &&
-      event.ctrlKey == true &&
+      event.key === 'Enter' &&
+      event.ctrlKey &&
       this.textarea.trim().length > 0
-    ) {
+    );
+  }
+
+  private addUserMessage(): void {
+    this.messageLog.push({
+      sentBy: 'user',
+      message: this.textarea.trim(),
+      type: 'none',
+    });
+  }
+
+  private handleChoiceOperator(): void {
+    const option = this._getOption();
+    if (!option) {
       this.messageLog.push({
-        sentBy: 'user',
-        message: this.textarea.trim(),
+        sentBy: 'bot',
+        message: 'Invalid option.\n Please click one of the options above.',
         type: 'none',
       });
-      this.textarea = '';
-      const lastStopedOperator = this.currentOperator;
-      if (lastStopedOperator.type == 'collect') {
-        this.conversationHistory = [];
-        this.conversationHistory.push(
-          {
-            role: 'system',
-            content: `You are a helpful context checker tool.`,
-          },
-          {
-            role: 'system',
-            // content: `Read the 'question' field from the JSON object and evaluate the 'answer' property if it is correct contextually with the question. Return a JSON object with two fields: 'valid' (a boolean indicating whether the context of the 'answer' is appropriate given the context of the 'question') and 'reason' (a string explaining why the 'answer' is or isn't contextually correct).`,
-            content: `Read the 'question' field from the JSON object and evaluate the 'answer' property if it is correct contextually with the question. Return a JSON object with one fields: 'valid' (a boolean indicating whether the context of the 'answer' is appropriate given the context of the 'question').`,
-          },
-          {
-            role: 'user',
-            content: JSON.stringify({
-              question: lastStopedOperator.script.content,
-              answer: this.messageLog[this.messageLog.length - 1].message,
-            }),
-          }
-        );
-
-        this.isBotTyping = true;
-        this.chatbotAPI
-          .evaluateMessage(this.conversationHistory)
-          .subscribe((response) => {
-            this.isBotTyping = false;
-            if (response.valid == true) {
-              if (
-                lastStopedOperator.script.variable &&
-                this.variables.has(lastStopedOperator.script.variable)
-              ) {
-                this.variables.set(
-                  lastStopedOperator.script.variable,
-                  this.messageLog[this.messageLog.length - 1].message as string
-                );
-              }
-              this.nextOperator();
-              this.continueConversation();
-            } else {
-              this.messageLog.push({
-                sentBy: 'bot',
-                message: lastStopedOperator.script.validationAnswer || '',
-                type: lastStopedOperator.type,
-              });
-            }
-          });
-      }
+    } else {
+      this.currentOperator = option;
+      this.continueConversation();
     }
+  }
+
+  private handleNonChoiceOperator(): void {
+    const lastStoppedOperator = this.currentOperator;
+    if (lastStoppedOperator.type === 'collect') {
+      this.processCollectOperator(lastStoppedOperator);
+    }
+  }
+
+  private processCollectOperator(lastStoppedOperator: any): void {
+    this.conversationHistory = [
+      {
+        role: 'system',
+        content: 'You are a helpful context checker tool.',
+      },
+      {
+        role: 'system',
+        content: `Read the 'question' field from the JSON object and evaluate the 'answer' property if it is correct contextually with the question. Return a JSON object with one field: 'valid' (a boolean indicating whether the context of the 'answer' is appropriate given the context of the 'question').`,
+      },
+      {
+        role: 'user',
+        content: JSON.stringify({
+          question: lastStoppedOperator.script.content,
+          answer: this.messageLog[this.messageLog.length - 1].message,
+        }),
+      },
+    ];
+
+    this.isBotTyping = true;
+    this.chatbotAPI
+      .evaluateMessage(this.conversationHistory)
+      .subscribe((response) => {
+        this.isBotTyping = false;
+        this.handleEvaluationResponse(response, lastStoppedOperator);
+      });
+  }
+
+  private handleEvaluationResponse(
+    response: any,
+    lastStoppedOperator: any
+  ): void {
+    if (response.valid) {
+      this.updateVariable(lastStoppedOperator);
+      this.nextOperator();
+      this.continueConversation();
+    } else {
+      this.messageLog.push({
+        sentBy: 'bot',
+        message: lastStoppedOperator.script.validationAnswer || '',
+        type: lastStoppedOperator.type,
+      });
+    }
+  }
+
+  private updateVariable(operator: any): void {
+    if (
+      operator.script.variable &&
+      this.variables.has(operator.script.variable)
+    ) {
+      this.variables.set(
+        operator.script.variable,
+        this.messageLog[this.messageLog.length - 1].message as string
+      );
+    }
+  }
+
+  _getOption(): any {
+    return this.currentOperator.children.find(
+      (o: any) => o.script.content == this.textarea.trim()
+    );
   }
 
   nextOperator() {
     this.currentOperator = this.currentOperator.children[0];
+    if (this.currentOperator == null) {
+      this.endConversation = true;
+    }
   }
 
   continueConversation() {
@@ -142,11 +194,13 @@ export class ChatComponent implements OnInit {
         });
         break;
       }
-      this.messageLog.push({
-        sentBy: 'bot',
-        message: this.setVariables(this.currentOperator.script.content),
-        type: this.currentOperator.type,
-      });
+      if (this.currentOperator.type != 'option') {
+        this.messageLog.push({
+          sentBy: 'bot',
+          message: this.setVariables(this.currentOperator.script.content),
+          type: this.currentOperator.type,
+        });
+      }
       if (this.currentOperator.type == 'end') {
         this.endConversation = true;
         break;
@@ -173,5 +227,17 @@ export class ChatComponent implements OnInit {
       }
       return match;
     });
+  }
+
+  optionClicked(option: any) {
+    if (!this.endConversation) {
+      this.currentOperator = option;
+      this.messageLog.push({
+        sentBy: 'user',
+        message: this.currentOperator.script.content,
+        type: this.currentOperator.type,
+      });
+      this.continueConversation();
+    }
   }
 }
