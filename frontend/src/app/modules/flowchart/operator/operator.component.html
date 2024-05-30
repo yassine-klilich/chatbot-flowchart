@@ -6,9 +6,11 @@
       <span class="grow text-center">{{
         data.title || data.type | titlecase
       }}</span>
+      @if (data.parentOperator) {
       <button (click)="deleteOperator()">
         <ng-icon name="lucideTrash2"></ng-icon>
       </button>
+      }
     </div>
     @switch(data.type) { @case ('message') {
     <app-message #operator [data]="data" />

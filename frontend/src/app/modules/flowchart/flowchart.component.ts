@@ -101,24 +101,46 @@ export class FlowchartComponent implements AfterViewInit {
 
   onRemove(operator: Operator) {
     const index = this.chatbot.operators.indexOf(operator);
-    if (index > -1) {
-      if (operator.parentOperator) {
-        let nextOperatorComp = this.operators.find(
-          (wid) => wid.data.parentOperator == operator._id
-        );
-        if (nextOperatorComp) {
-          nextOperatorComp.data.parentOperator = operator.parentOperator;
-          while (nextOperatorComp?.connection) {
-            if (nextOperatorComp && nextOperatorComp.connection) {
-              this.drawOperator(nextOperatorComp);
-            }
-            nextOperatorComp = this.operators.find(
-              (op) => op.data.parentOperator == nextOperatorComp?.data._id
-            );
-          }
-        }
-      }
+    if (index == -1) return;
+
+    if (operator.type == 'choice' || operator.type == 'option') {
+      this._deleteOperatorAndRelatives(operator);
+    } else {
+      this._updateNextOperator(operator);
       this.chatbot.operators.splice(index, 1);
+    }
+  }
+
+  private _updateNextOperator(operator: Operator) {
+    let nextOperatorComp = this.operators.find(
+      (wid) => wid.data.parentOperator == operator._id
+    );
+    if (nextOperatorComp) {
+      nextOperatorComp.data.parentOperator = operator.parentOperator;
+      while (nextOperatorComp?.connection) {
+        if (nextOperatorComp && nextOperatorComp.connection) {
+          this.drawOperator(nextOperatorComp);
+        }
+        nextOperatorComp = this.operators.find(
+          (op) => op.data.parentOperator == nextOperatorComp?.data._id
+        );
+      }
+    }
+  }
+
+  private _deleteOperatorAndRelatives(operator: Operator) {
+    const index = this.chatbot.operators.indexOf(operator);
+    if (index !== -1) {
+      const objID = this.chatbot.operators[index]._id;
+
+      this.chatbot.operators.splice(index, 1);
+
+      const children = this.chatbot.operators.filter(
+        (obj) => obj.parentOperator === objID
+      );
+      children.forEach((child) => {
+        this._deleteOperatorAndRelatives(child);
+      });
     }
   }
 
