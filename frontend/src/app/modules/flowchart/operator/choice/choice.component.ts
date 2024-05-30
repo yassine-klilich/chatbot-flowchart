@@ -12,6 +12,7 @@ import { Operator } from '../../../../core/models';
 import { FlowchartService } from '../../../../services/flowchart.service';
 import { FlowchartComponent } from '../../flowchart.component';
 import { OperatorComponent } from '../operator.component';
+import { OptionComponent } from './option/option.component';
 
 @Component({
   selector: 'app-choice',
@@ -72,7 +73,25 @@ export class ChoiceComponent implements OnInit {
       );
       option.connection = this.flowchartComponent.drawConnection(option);
       this.flowchartService.instance.revalidate(option.host.nativeElement);
+
+      this._updateOptionRelativesPosition(option);
     });
+  }
+
+  private _updateOptionRelativesPosition(option: OperatorComponent) {
+    let nextOperatorComp = this.flowchartComponent.operators.find(
+      (wid) => wid.data.parentOperator == option.data._id
+    );
+    if (nextOperatorComp) {
+      while (nextOperatorComp?.connection) {
+        if (nextOperatorComp && nextOperatorComp.connection) {
+          this.flowchartComponent.drawOperator(nextOperatorComp);
+        }
+        nextOperatorComp = this.flowchartComponent.operators.find(
+          (op) => op.data.parentOperator == nextOperatorComp?.data._id
+        );
+      }
+    }
   }
 
   addOption() {
@@ -87,7 +106,9 @@ export class ChoiceComponent implements OnInit {
     });
   }
 
-  deleteOption(option: ChoiceOption) {}
+  deleteOption(option: OperatorComponent) {
+    option.deleteOperator();
+  }
 }
 
 export interface ChoiceOption {
