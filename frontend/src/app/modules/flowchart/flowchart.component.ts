@@ -67,12 +67,7 @@ export class FlowchartComponent implements AfterViewInit {
   }
 
   drawOperators() {
-    for (let i = 0; i < this.operators.length; i++) {
-      const operator = this.operators.get(i);
-      if (operator) {
-        this.drawOperator(operator);
-      }
-    }
+    this.operators.forEach((operator) => this.drawOperator(operator));
   }
 
   drawConnection(operator: OperatorComponent): Connection | null {
