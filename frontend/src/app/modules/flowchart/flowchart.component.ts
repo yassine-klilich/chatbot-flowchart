@@ -97,6 +97,25 @@ export class FlowchartComponent implements AfterViewInit {
 
   addOperator(operator: Operator) {
     this.chatbot.operators.push(operator);
+    if (operator.type != 'option') {
+      setTimeout(() => {
+        let nextOperatorComp = this.operators.find(
+          (o) => o.data.parentOperator == operator.parentOperator
+        );
+        if (nextOperatorComp && operator != nextOperatorComp?.data) {
+          nextOperatorComp.data.parentOperator = operator._id;
+
+          while (nextOperatorComp?.connection) {
+            if (nextOperatorComp && nextOperatorComp.connection) {
+              this.drawOperator(nextOperatorComp);
+            }
+            nextOperatorComp = this.operators.find(
+              (op) => op.data.parentOperator == nextOperatorComp?.data._id
+            );
+          }
+        }
+      });
+    }
   }
 
   onRemove(operator: Operator) {
