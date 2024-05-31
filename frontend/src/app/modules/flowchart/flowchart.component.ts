@@ -71,7 +71,10 @@ export class FlowchartComponent implements AfterViewInit {
   }
 
   drawConnection(operator: OperatorComponent): Connection | null {
-    if (operator.data.parentOperator) {
+    if (
+      operator.data.parentOperator &&
+      operator.host.nativeElement.parentElement
+    ) {
       const parentOperator = this.operators.find(
         (_operator) => _operator.data._id == operator.data.parentOperator
       );
