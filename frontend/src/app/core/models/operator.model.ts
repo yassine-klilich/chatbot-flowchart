@@ -15,4 +15,5 @@ export type OperatorType =
   | 'option'
   | 'api'
   | 'assistant'
+  | 'trigger'
   | 'end';

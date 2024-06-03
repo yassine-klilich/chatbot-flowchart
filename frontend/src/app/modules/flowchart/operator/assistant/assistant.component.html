@@ -1,0 +1,29 @@
+<div class="flex flex-col gap-y-.8 p-1">
+  <textarea
+    placeholder="Type your message here."
+    class="rounded-xs border border-gray-300 focus:outline-blue-500 py-.2 px-.6"
+    [(ngModel)]="data.script.content"
+  ></textarea>
+  <input
+    type="text"
+    placeholder="Label"
+    class="rounded-xs border border-gray-300 focus:outline-blue-500 py-.2 px-.6"
+    [(ngModel)]="data.title"
+  />
+  @for (trigger of triggers; track trigger) {
+  <div class="flex gap-x-.6 items-center">
+    <input
+      type="text"
+      [(ngModel)]="trigger.data.script.content"
+      class="rounded-xs grow border border-gray-300 focus:outline-blue-500 py-.2 px-.6"
+    />
+    <button class="inline-flex" (click)="deleteTrigger(trigger)">
+      <ng-icon size="1.6rem" name="lucideTrash2" color="red" />
+    </button>
+  </div>
+  }
+  <button class="btn self-start" (click)="addTrigger()">
+    <ng-icon size="1.6rem" name="lucidePlusCircle" />
+    <span>Add trigger</span>
+  </button>
+</div>

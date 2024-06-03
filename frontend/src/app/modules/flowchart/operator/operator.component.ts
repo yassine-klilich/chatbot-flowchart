@@ -1,9 +1,11 @@
 import { TitleCasePipe } from '@angular/common';
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   EventEmitter,
   Input,
+  OnDestroy,
   Output,
   ViewChild,
   inject,
@@ -19,6 +21,8 @@ import { OptionComponent } from './choice/option/option.component';
 import { CollectDataComponent } from './collect-data/collect-data.component';
 import { EndComponent } from './end/end.component';
 import { MessageComponent } from './message/message.component';
+import { AssistantComponent } from './assistant/assistant.component';
+import { TriggerComponent } from './assistant/trigger/trigger.component';
 
 @Component({
   selector: 'app-operator',
@@ -30,6 +34,8 @@ import { MessageComponent } from './message/message.component';
     CollectDataComponent,
     ChoiceComponent,
     OptionComponent,
+    AssistantComponent,
+    TriggerComponent,
     EndComponent,
     TitleCasePipe,
   ],
@@ -39,7 +45,7 @@ import { MessageComponent } from './message/message.component';
     class: 'absolute operator',
   },
 })
-export class OperatorComponent {
+export class OperatorComponent implements AfterViewInit, OnDestroy {
   host = inject(ElementRef<HTMLElement>);
   flowchartService = inject(FlowchartService);
   flowchartComponent = inject(FlowchartComponent);
@@ -56,6 +62,10 @@ export class OperatorComponent {
       connector: 'Flowchart',
     });
     this.flowchartService.changes.next(this);
+  }
+
+  ngOnDestroy(): void {
+    this.flowchartService.remove.next(this);
   }
 
   deleteOperator() {

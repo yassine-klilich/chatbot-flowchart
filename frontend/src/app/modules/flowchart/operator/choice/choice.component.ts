@@ -33,17 +33,18 @@ export class ChoiceComponent implements OnInit {
   private _optionsCounter: number = 0;
 
   ngOnInit(): void {
-    this.flowchartComponent.operators.changes.subscribe((e) => {
+    this.flowchartComponent.operators.changes.subscribe(() => {
       this.options = this.flowchartComponent.operators.filter(
         (o) => o.data.parentOperator == this.data._id
       );
       this._optionsCounter = this.options.length;
-      this.setOptionsPosition();
+      this.updateTreePosition();
       this.cdr.detectChanges();
     });
+    this.flowchartService.remove.subscribe((removedOperator) => {});
   }
 
-  setOptionsPosition() {
+  updateTreePosition() {
     const spaceBetweenOptions = 40;
     const totalWidthOfOptions =
       this.options.reduce((total, option) => {

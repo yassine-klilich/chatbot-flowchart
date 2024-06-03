@@ -16,6 +16,7 @@ import { ChatComponent } from '../chat/chat.component';
 import { Chatbot, Operator } from '../../core/models';
 import { ChatbotApiService } from '../../services/chatbot-api.service';
 import { ChoiceComponent } from './operator/choice/choice.component';
+import { AssistantComponent } from './operator/assistant/assistant.component';
 
 @Component({
   selector: 'app-flowchart',
@@ -54,20 +55,57 @@ export class FlowchartComponent implements AfterViewInit {
           this.chatbot = result;
           setTimeout(() => {
             this.drawOperators();
+            this.flowchartService.changes.subscribe((newOperator) => {
+              this.drawOperator(newOperator);
+              let nextOperatorComp = this.operators.find(
+                (o) =>
+                  o.data.parentOperator == newOperator.parentOperator &&
+                  o.data._id != newOperator._id
+              );
+              if (nextOperatorComp) {
+                nextOperatorComp.data.parentOperator = newOperator._id;
+
+                while (nextOperatorComp?.connection) {
+                  if (nextOperatorComp && nextOperatorComp.connection) {
+                    this.drawOperator(nextOperatorComp);
+                  }
+                  nextOperatorComp = this.operators.find(
+                    (op) => op.data.parentOperator == nextOperatorComp?.data._id
+                  );
+                }
+              }
+            });
           });
         });
     });
   }
 
   ngAfterViewInit(): void {
-    this.flowchartService.changes.subscribe((newOperator) => {
-      this.drawOperator(newOperator);
-    });
     this.initPanZoom();
   }
 
   drawOperators() {
     this.operators.forEach((operator) => this.drawOperator(operator));
+  }
+
+  drawOperator(operator: OperatorComponent): void {
+    console.count(operator.data.type + ' - ' + operator.data.script.content);
+    console.trace();
+    if (['option', 'trigger'].includes(operator.data.type)) {
+      const choiceOp = this.operators.find(
+        (o) => o.data._id == operator.data.parentOperator
+      );
+      (
+        choiceOp?.operatorComp as ChoiceComponent | AssistantComponent
+      ).updateTreePosition();
+    } else {
+      if (operator.connection) {
+        this.flowchartService.instance.deleteConnection(operator.connection);
+      }
+      operator.calculatePosition();
+      operator.connection = this.drawConnection(operator);
+      this.flowchartService.instance.revalidate(operator.host.nativeElement);
+    }
   }
 
   drawConnection(operator: OperatorComponent): Connection | null {
@@ -95,12 +133,14 @@ export class FlowchartComponent implements AfterViewInit {
 
   addOperator(operator: Operator) {
     this.chatbot.operators.push(operator);
-    if (operator.type != 'option') {
+    if (!['option', 'trigger'].includes(operator.type)) {
       setTimeout(() => {
         let nextOperatorComp = this.operators.find(
-          (o) => o.data.parentOperator == operator.parentOperator
+          (o) =>
+            o.data.parentOperator == operator.parentOperator &&
+            o.data._id != operator._id
         );
-        if (nextOperatorComp && operator != nextOperatorComp?.data) {
+        if (nextOperatorComp) {
           nextOperatorComp.data.parentOperator = operator._id;
 
           while (nextOperatorComp?.connection) {
@@ -181,24 +221,6 @@ export class FlowchartComponent implements AfterViewInit {
         this.panzoomController.zoomWithWheel(event);
       }
     );
-  }
-
-  drawOperator(operator: OperatorComponent): void {
-    if (operator.data.type == 'option') {
-      const choiceOp = this.operators.find(
-        (o) => o.data._id == operator.data.parentOperator
-      );
-      if (choiceOp) {
-        (choiceOp.operatorComp as ChoiceComponent).setOptionsPosition();
-      }
-    } else {
-      if (operator.connection) {
-        this.flowchartService.instance.deleteConnection(operator.connection);
-      }
-      operator.calculatePosition();
-      operator.connection = this.drawConnection(operator);
-      this.flowchartService.instance.revalidate(operator.host.nativeElement);
-    }
   }
 
   submit() {
