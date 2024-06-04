@@ -89,8 +89,6 @@ export class FlowchartComponent implements AfterViewInit {
   }
 
   drawOperator(operator: OperatorComponent): void {
-    console.count(operator.data.type + ' - ' + operator.data.script.content);
-    console.trace();
     if (['option', 'trigger'].includes(operator.data.type)) {
       const choiceOp = this.operators.find(
         (o) => o.data._id == operator.data.parentOperator

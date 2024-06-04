@@ -8,6 +8,15 @@ export interface Operator {
   parentOperator?: string;
 }
 
+export interface ChatOperator {
+  _id?: string;
+  type: OperatorType;
+  title: string;
+  script: OperatorScript;
+  parentOperator?: string;
+  children: ChatOperator[];
+}
+
 export type OperatorType =
   | 'message'
   | 'collect'

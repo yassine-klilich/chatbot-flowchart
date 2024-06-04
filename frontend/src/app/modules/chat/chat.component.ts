@@ -1,7 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Chatbot, Message, OpenAIMessage } from '../../core/models';
+import {
+  ChatOperator,
+  Chatbot,
+  Message,
+  OpenAIMessage,
+} from '../../core/models';
 import { ChatbotApiService } from '../../services/chatbot-api.service';
 
 @Component({
@@ -24,8 +29,8 @@ export class ChatComponent implements OnInit {
   endConversation: boolean = false;
   variables: Map<string, string> = new Map();
   isBotTyping: boolean = false;
-  chatFlow: any;
-  currentOperator: any;
+  chatFlow?: ChatOperator;
+  currentOperator?: ChatOperator;
 
   ngOnInit(): void {
     const _id = this.chatbotId();
@@ -41,9 +46,9 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  buildChatFlow() {
+  buildChatFlow(): ChatOperator | undefined {
     const map = new Map();
-    let root = null;
+    let root: ChatOperator | undefined;
 
     this.chatbot.operators.forEach((item) => {
       map.set(item._id, { ...item, children: [] });
@@ -66,8 +71,11 @@ export class ChatComponent implements OnInit {
   submitMessage(event: KeyboardEvent): void {
     if (this.isMessageSubmissionValid(event)) {
       this.addUserMessage();
-      if (this.currentOperator.type === 'choice') {
+      if (this.currentOperator?.type === 'choice') {
         this.handleChoiceOperator();
+      }
+      if (this.currentOperator?.type === 'assistant') {
+        this.handleAssistantOperator();
       } else {
         this.handleNonChoiceOperator();
       }
@@ -106,9 +114,44 @@ export class ChatComponent implements OnInit {
     }
   }
 
+  private handleAssistantOperator(): void {
+    const triggers = this.currentOperator?.children.map((trigger) => ({
+      id: trigger._id,
+      content: trigger.script.content,
+    }));
+    if (triggers && triggers.length > 0) {
+      const data: OpenAIMessage[] = [
+        {
+          role: 'system',
+          content: 'You are a helpful context checker tool.',
+        },
+        {
+          role: 'system',
+          content: `Read the 'message' field from the provided JSON object. Based on the content of the 'message', identify and select the most appropriate option from the 'options' field. Each option is represented as a JSON object with 'id' and 'text' fields. Return a JSON object containing a single field named 'triggerID', which should correspond to the 'id' of the matched option.`,
+        },
+        {
+          role: 'user',
+          content: JSON.stringify({
+            message: this.textarea,
+            options: triggers,
+          }),
+        },
+      ];
+      this.chatbotAPI.evaluateMessage(data).subscribe((response) => {
+        const trigger = this.currentOperator?.children.find(
+          (t) => t._id == response.triggerID
+        );
+        if (trigger) {
+          this.currentOperator = trigger;
+          this.continueConversation();
+        }
+      });
+    }
+  }
+
   private handleNonChoiceOperator(): void {
     const lastStoppedOperator = this.currentOperator;
-    if (lastStoppedOperator.type === 'collect') {
+    if (lastStoppedOperator?.type === 'collect') {
       this.processCollectOperator(lastStoppedOperator);
     }
   }
@@ -171,13 +214,13 @@ export class ChatComponent implements OnInit {
   }
 
   _getOption(): any {
-    return this.currentOperator.children.find(
+    return this.currentOperator?.children.find(
       (o: any) => o.script.content == this.textarea.trim()
     );
   }
 
   nextOperator() {
-    this.currentOperator = this.currentOperator.children[0];
+    this.currentOperator = this.currentOperator?.children[0];
     if (this.currentOperator == null) {
       this.endConversation = true;
     }
@@ -191,6 +234,15 @@ export class ChatComponent implements OnInit {
           message: this.setVariables(this.currentOperator.script.content),
           type: this.currentOperator.type,
           data: { options: this.currentOperator.children },
+        });
+        break;
+      }
+      if (this.currentOperator.type == 'assistant') {
+        this.messageLog.push({
+          sentBy: 'bot',
+          message: this.setVariables(this.currentOperator.script.content),
+          type: this.currentOperator.type,
+          data: { triggers: this.currentOperator.children },
         });
         break;
       }
@@ -234,8 +286,8 @@ export class ChatComponent implements OnInit {
       this.currentOperator = option;
       this.messageLog.push({
         sentBy: 'user',
-        message: this.currentOperator.script.content,
-        type: this.currentOperator.type,
+        message: this.currentOperator?.script.content || '',
+        type: this.currentOperator?.type || 'none',
       });
       this.continueConversation();
     }

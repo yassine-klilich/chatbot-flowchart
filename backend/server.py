@@ -100,7 +100,7 @@ def delete_chat(_id):
     return jsonify({'error': 'Chat not found'}), 404
 
   
-# DELETE endpoint to delete a chat by ID
+# Connect to OpenAI API.
 @app.route('/openai', methods=['POST'])
 def openai():
   data = request.get_json()
