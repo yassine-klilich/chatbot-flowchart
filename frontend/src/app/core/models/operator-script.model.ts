@@ -2,6 +2,7 @@ import { ChoiceOption } from '../../modules/flowchart/operator/choice/choice.com
 
 export interface OperatorScript {
   content: string;
+  prompt?: string;
   validationAnswer?: string;
   variable?: string;
 }
