@@ -127,7 +127,7 @@ export class ChatComponent implements OnInit {
         },
         {
           role: 'system',
-          content: `Read the 'message' field from the provided JSON object. Based on the content of the 'message', identify and select the most appropriate option from the 'options' field. Each option is represented as a JSON object with 'id' and 'text' fields. Return a JSON object containing a single field named 'triggerID', which should correspond to the 'id' of the matched option.`,
+          content: `Read the 'message' field from the provided JSON object. Based on the content of the 'message', identify and select the most appropriate option from the 'options' field. Each option is represented as a JSON object with 'id' and 'text' fields. Return a JSON object containing a single field named 'triggerID', which should correspond to the 'id' of the matched option. If none of the options matches, return the 'triggerID' with empty string.`,
         },
         {
           role: 'user',
@@ -144,6 +144,12 @@ export class ChatComponent implements OnInit {
         if (trigger) {
           this.currentOperator = trigger;
           this.continueConversation();
+        } else {
+          this.messageLog.push({
+            sentBy: 'bot',
+            message: this.currentOperator?.script.validationAnswer || '',
+            type: 'none',
+          });
         }
       });
     }
