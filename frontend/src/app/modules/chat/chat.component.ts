@@ -127,7 +127,7 @@ export class ChatComponent implements OnInit {
         },
         {
           role: 'system',
-          content: `Read the 'message' field from the provided JSON object. Based on the content of the 'message', identify and select the most appropriate option from the 'options' field. Each option is represented as a JSON object with 'id' and 'text' fields. Return a JSON object containing a single field named 'triggerID', which should correspond to the 'id' of the matched option. If none of the options matches, return the 'triggerID' with empty string.`,
+          content: `Read the 'message' field from the provided JSON object. Based on the content of the 'message', identify and select the most appropriate option from the 'options' field. Each option is represented as a JSON object with 'id' and 'content' fields. Return a JSON object containing a single field named 'triggerID', which should correspond to the 'id' of the matched option. If none of the options matches, return the 'triggerID' with empty string.`,
         },
         {
           role: 'user',
@@ -137,7 +137,10 @@ export class ChatComponent implements OnInit {
           }),
         },
       ];
+
+      this.isBotTyping = true;
       this.chatbotAPI.evaluateMessage(data).subscribe((response) => {
+        this.isBotTyping = false;
         const trigger = this.currentOperator?.children.find(
           (t) => t._id == response.triggerID
         );
@@ -156,38 +159,40 @@ export class ChatComponent implements OnInit {
   }
 
   private handleNonChoiceOperator(): void {
-    const lastStoppedOperator = this.currentOperator;
-    if (lastStoppedOperator?.type === 'collect') {
-      this.processCollectOperator(lastStoppedOperator);
+    if (this.currentOperator?.type === 'collect') {
+      this.processCollectOperator();
     }
   }
 
-  private processCollectOperator(lastStoppedOperator: any): void {
-    this.conversationHistory = [
-      {
-        role: 'system',
-        content: 'You are a helpful context checker tool.',
-      },
-      {
-        role: 'system',
-        content: `Read the 'question' field from the JSON object and evaluate the 'answer' property if it is correct contextually with the question. Return a JSON object with one field: 'valid' (a boolean indicating whether the context of the 'answer' is appropriate given the context of the 'question').`,
-      },
-      {
-        role: 'user',
-        content: JSON.stringify({
-          question: lastStoppedOperator.script.content,
-          answer: this.messageLog[this.messageLog.length - 1].message,
-        }),
-      },
-    ];
+  private processCollectOperator(): void {
+    const prompt = this.currentOperator?.script.prompt?.trim();
+    if (prompt != null && prompt != '') {
+      this.conversationHistory = [
+        {
+          role: 'system',
+          content: `Validate the 'message' field from the JSON object using the 'prompt' field. Return the result in a JSON object with one field named 'valid' (a boolean indicating whether the message is valid or not).`,
+        },
+        {
+          role: 'user',
+          content: JSON.stringify({
+            prompt: this.currentOperator?.script.prompt,
+            message: this.messageLog[this.messageLog.length - 1].message,
+          }),
+        },
+      ];
 
-    this.isBotTyping = true;
-    this.chatbotAPI
-      .evaluateMessage(this.conversationHistory)
-      .subscribe((response) => {
-        this.isBotTyping = false;
-        this.handleEvaluationResponse(response, lastStoppedOperator);
-      });
+      this.isBotTyping = true;
+      this.chatbotAPI
+        .evaluateMessage(this.conversationHistory)
+        .subscribe((response) => {
+          this.isBotTyping = false;
+          this.handleEvaluationResponse(response, this.currentOperator);
+        });
+    } else {
+      this.updateVariable(this.currentOperator);
+      this.nextOperator();
+      this.continueConversation();
+    }
   }
 
   private handleEvaluationResponse(
