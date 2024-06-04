@@ -39,8 +39,6 @@ export class ChatComponent implements OnInit {
         this.chatbot = result;
         this.chatFlow = this.buildChatFlow();
         this.currentOperator = this.chatFlow;
-
-        // this.startingPoint = this.chatFlow
         this.continueConversation();
       });
     }
