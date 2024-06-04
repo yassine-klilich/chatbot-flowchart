@@ -158,7 +158,7 @@ export class FlowchartComponent implements AfterViewInit {
     const index = this.chatbot.operators.indexOf(operator);
     if (index == -1) return;
 
-    if (operator.type == 'choice' || operator.type == 'option') {
+    if (['choice', 'option', 'assistant', 'trigger'].includes(operator.type)) {
       this._deleteOperatorAndRelatives(operator);
     } else {
       this._updateNextOperator(operator);
