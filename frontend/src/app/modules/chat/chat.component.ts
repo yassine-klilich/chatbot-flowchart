@@ -237,6 +237,10 @@ export class ChatComponent implements OnInit {
 
   continueConversation() {
     while (this.currentOperator != null) {
+      if (this.currentOperator.type == 'trigger') {
+        this.nextOperator();
+        continue;
+      }
       if (this.currentOperator.type == 'choice') {
         this.messageLog.push({
           sentBy: 'bot',
