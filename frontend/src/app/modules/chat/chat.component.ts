@@ -9,6 +9,11 @@ import {
 } from '../../core/models';
 import { ChatbotApiService } from '../../services/chatbot-api.service';
 
+interface SmartTrigger {
+  id: string;
+  content: string;
+}
+
 @Component({
   selector: 'app-chat',
   standalone: true,
@@ -31,6 +36,11 @@ export class ChatComponent implements OnInit {
   isBotTyping: boolean = false;
   chatFlow?: ChatOperator;
   currentOperator?: ChatOperator;
+  smartTriggers: SmartTrigger[] = [];
+
+  public get lastMessage(): string {
+    return this.messageLog[this.messageLog.length - 1].message;
+  }
 
   ngOnInit(): void {
     const _id = this.chatbotId();
@@ -39,6 +49,7 @@ export class ChatComponent implements OnInit {
         this.chatbot = result;
         this.chatFlow = this.buildChatFlow();
         this.currentOperator = this.chatFlow;
+        this.extractSmartTriggers();
         this.continueConversation();
       });
     }
@@ -66,19 +77,88 @@ export class ChatComponent implements OnInit {
     return root;
   }
 
+  extractSmartTriggers(): void {
+    this.chatbot.operators.forEach((operator) => {
+      if (operator.smartTrigger) {
+        this.smartTriggers.push({
+          id: operator._id || '',
+          content: operator.smartTrigger,
+        });
+      }
+    });
+  }
+
   submitMessage(event: KeyboardEvent): void {
     if (this.isMessageSubmissionValid(event)) {
       this.addUserMessage();
-      if (this.currentOperator?.type === 'choice') {
-        this.handleChoiceOperator();
-      }
-      if (this.currentOperator?.type === 'assistant') {
-        this.handleAssistantOperator();
-      } else {
-        this.handleNonChoiceOperator();
-      }
+      this.checkForSmartTrigger();
       this.textarea = '';
     }
+  }
+
+  private checkForSmartTrigger(): void {
+    // if (this.lastMessage) {
+    //   const data: OpenAIMessage[] = [
+    //     {
+    //       role: 'system',
+    //       content: 'You are a helpful context checker tool.',
+    //     },
+    //     {
+    //       role: 'user',
+    //       content:
+    //         `Given a JSON object with a message and a list of options, if the message matches any of the options' content, then return the option and do not include any explanations, otherwise return {"id": null}. \n` +
+    //         JSON.stringify({
+    //           message: this.textarea,
+    //           options: this.smartTriggers,
+    //         }),
+    //     },
+    //   ];
+    //   this.isBotTyping = true;
+    //   this.chatbotAPI.evaluateMessage(data).subscribe((response) => {
+    //     this.isBotTyping = false;
+    //     let _smartTrigger = false;
+    //     if (response.triggerID && this.chatFlow) {
+    //       const operator = this.findOperatorById(this.chatFlow, response.id);
+    //       if (operator) {
+    //         this.currentOperator = operator;
+    //         debugger;
+    //         this.continueConversation();
+    //         _smartTrigger = true;
+    //       }
+    //     }
+
+    //     if (!_smartTrigger) {
+    if (this.currentOperator?.type === 'choice') {
+      this.handleChoiceOperator();
+    }
+    if (this.currentOperator?.type === 'assistant') {
+      this.handleAssistantOperator();
+    } else {
+      this.handleNonChoiceOperator();
+    }
+    // }
+    // });
+    // }
+  }
+
+  findOperatorById(
+    operator: ChatOperator,
+    id: string
+  ): ChatOperator | undefined {
+    if (operator._id === id) {
+      return operator;
+    }
+
+    if (operator?.children) {
+      for (let i = 0; i < operator.children.length; i++) {
+        const result = this.findOperatorById(operator.children[i], id);
+        if (result) {
+          return result;
+        }
+      }
+    }
+
+    return undefined;
   }
 
   private isMessageSubmissionValid(event: KeyboardEvent): boolean {
@@ -125,7 +205,7 @@ export class ChatComponent implements OnInit {
         },
         {
           role: 'system',
-          content: `Read the 'message' field from the provided JSON object. Based on the content of the 'message', identify and select the most appropriate option from the 'options' field. Each option is represented as a JSON object with 'id' and 'content' fields. Return a JSON object containing a single field named 'triggerID', which should correspond to the 'id' of the matched option. If none of the options matches, return the 'triggerID' with empty string.`,
+          content: `Read the 'message' field from the provided JSON object. Based on the content of the 'message', identify and select the most appropriate option from the 'options' field. Each option is represented as a JSON object with 'id' and 'content' fields. Do not include any explanations and return a JSON object containing a single field named 'triggerID', which should correspond to the 'id' of the matched option. If none of the options matches, return the 'triggerID' with empty string.`,
         },
         {
           role: 'user',
@@ -168,7 +248,7 @@ export class ChatComponent implements OnInit {
       this.conversationHistory = [
         {
           role: 'system',
-          content: `Validate the 'message' field from the JSON object using the 'prompt' field. Return the result in a JSON object with one field named 'valid' (a boolean indicating whether the message is valid or not).`,
+          content: `Validate the 'message' field from the JSON object using the 'prompt' field. Do not include any explanations and return the result in a JSON object with one field named 'valid' (a boolean indicating whether the message is valid or not).`,
         },
         {
           role: 'user',

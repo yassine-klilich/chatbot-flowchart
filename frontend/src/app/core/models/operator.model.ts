@@ -6,6 +6,7 @@ export interface Operator {
   title: string;
   script: OperatorScript;
   parentOperator?: string;
+  smartTrigger?: string;
 }
 
 export interface ChatOperator {
