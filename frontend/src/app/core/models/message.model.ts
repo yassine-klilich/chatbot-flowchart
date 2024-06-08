@@ -3,7 +3,7 @@ import { OperatorType } from './operator.model';
 
 export interface Message {
   sentBy: 'bot' | 'user';
-  message: string | OperatorScript;
+  message: string;
   type: OperatorType | 'none';
   data?: any;
 }
