@@ -6,11 +6,13 @@
 
 html {
   font-size: 10px;
+  height: 100%;
 }
 
 body {
   font-size: 1.4rem;
-  margin: 0.8rem;
+  height: 100%;
+  margin: 0;
 }
 
 .btn {
@@ -21,6 +23,26 @@ body {
   align-items: center;
   justify-content: center;
   column-gap: 0.4rem;
+}
+
+.btn--primary {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 250ms;
+}
+.btn--primary:hover {
+  background-color: #0056b3;
+}
+.btn--primary:active {
+  background-color: #00408a;
 }
 
 /* Table styles */

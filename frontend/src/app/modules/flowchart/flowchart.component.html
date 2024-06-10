@@ -1,15 +1,21 @@
-<div class="flex">
-  <div class="overflow-auto">
-    <div class="flex gap-x-.4">
-      <button class="btn" (click)="setZoom(2.2)">Zoom</button>
-      <button class="btn" (click)="setZoom(1)">Reset zoom</button>
-      <button class="btn" (click)="submit()">Submit</button>
+<div class="grid grid-cols-[1fr_auto] h-full p-.8 gap-x-2">
+  <div class="overflow-auto h-full flex flex-col">
+    <div class="col-start-1 col-end-3 flex justify-end">
+      <button class="btn btn--primary" (click)="submit()">Submit</button>
     </div>
-    <div class="h-[600px] border-2 m-.6">
+    <div class="border-2 h-full relative mt-1" #flowchartViewport>
+      <input
+        type="range"
+        class="absolute z-10 -rotate-90 top-[calc(100%-78px)] left-[-40px] range-input"
+        min="0.5"
+        max="1.2"
+        step="0.1"
+        [formControl]="rangeZoom"
+      />
       <div
         id="flowchartContainer"
         #flowchartContainer
-        class="w-[10000px] h-[10000px] overflow-hidden relative"
+        class="w-[10000px] h-[10000px] overflow-hidden relative origin-[0]"
       >
         @if (chatbot) { @for (operator of chatbot.operators; track operator) {
         <app-operator [data]="operator" (onRemove)="onRemove(operator)" />
@@ -17,5 +23,5 @@
       </div>
     </div>
   </div>
-  <app-chat [chatbotId]="chatbotId"></app-chat>
+  <app-chat class="flex items-end" [chatbotId]="chatbotId"></app-chat>
 </div>

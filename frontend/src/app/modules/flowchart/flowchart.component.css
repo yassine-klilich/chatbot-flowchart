@@ -3,3 +3,34 @@
   background-image: linear-gradient(to right, #dadada 1px, transparent 1px),
     linear-gradient(to bottom, #dadada 1px, transparent 1px);
 }
+
+.range-input {
+  -webkit-appearance: none;
+  width: 120px;
+  height: 10px;
+  background: #ddd;
+  outline: none;
+  opacity: 0.8;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+  border-radius: 20px;
+}
+.range-input:hover {
+  opacity: 1;
+}
+.range-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background: theme("colors.blue.600");
+  cursor: pointer;
+  border-radius: 50%;
+}
+.range-input::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  background: theme("colors.blue.600");
+  cursor: pointer;
+  border-radius: 50%;
+}

@@ -111,8 +111,8 @@ def openai():
     api_key=os.getenv('openai_token'),
   )
   response = client.chat.completions.create(
-    model = "gpt-3.5-turbo-0125",
-    # model = "gpt-4-turbo",
+    # model = "gpt-3.5-turbo-0125",
+    model = "gpt-4-turbo",
     messages = data.get('messages')
   )
   return response.choices[0].message.content

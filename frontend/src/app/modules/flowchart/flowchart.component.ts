@@ -17,11 +17,12 @@ import { Chatbot, Operator } from '../../core/models';
 import { ChatbotApiService } from '../../services/chatbot-api.service';
 import { ChoiceComponent } from './operator/choice/choice.component';
 import { AssistantComponent } from './operator/assistant/assistant.component';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-flowchart',
   standalone: true,
-  imports: [OperatorComponent, ChatComponent],
+  imports: [OperatorComponent, ChatComponent, ReactiveFormsModule],
   templateUrl: './flowchart.component.html',
   styleUrl: './flowchart.component.css',
 })
@@ -33,11 +34,22 @@ export class FlowchartComponent implements AfterViewInit {
   chatbotId!: string;
   chatbot!: Chatbot;
   panzoomController!: PanzoomObject;
+  rangeZoom: FormControl = new FormControl(1);
 
   @ViewChild('flowchartContainer') container!: ElementRef;
+  @ViewChild('flowchartViewport') flowchartViewport!: ElementRef;
   @ViewChildren(OperatorComponent) operators!: QueryList<OperatorComponent>;
 
   ngOnInit() {
+    this.initFlowchart();
+    this.fetchChatbot();
+  }
+
+  ngAfterViewInit(): void {
+    this.initPanZoom();
+  }
+
+  initFlowchart(): void {
     const container = document.getElementById('flowchartContainer');
     if (container) {
       this.flowchartService.instance = newInstance({
@@ -45,7 +57,9 @@ export class FlowchartComponent implements AfterViewInit {
         elementsDraggable: false,
       });
     }
+  }
 
+  fetchChatbot(): void {
     this.route.params.subscribe((params) => {
       this.chatbotId = params['id'];
 
@@ -78,10 +92,6 @@ export class FlowchartComponent implements AfterViewInit {
           });
         });
     });
-  }
-
-  ngAfterViewInit(): void {
-    this.initPanZoom();
   }
 
   drawOperators() {
@@ -207,18 +217,26 @@ export class FlowchartComponent implements AfterViewInit {
   initPanZoom() {
     this.panzoomController = Panzoom(this.container.nativeElement, {
       minScale: 0.5,
-      maxScale: 2,
+      maxScale: 1.2,
       contain: 'outside',
       excludeClass: 'operator',
-      startX: -1100,
+      startX: -800,
+      // origin: 'top left',
     });
 
     this.container.nativeElement.addEventListener(
       'wheel',
       (event: WheelEvent) => {
         this.panzoomController.zoomWithWheel(event);
+        this.rangeZoom.setValue(this.panzoomController.getScale(), {
+          emitEvent: false,
+        });
       }
     );
+
+    this.rangeZoom.valueChanges.subscribe((value) => {
+      this.panzoomController.zoom(value);
+    });
   }
 
   submit() {
