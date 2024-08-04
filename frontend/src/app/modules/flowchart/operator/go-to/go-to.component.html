@@ -1,0 +1,10 @@
+<div class="flex flex-col gap-y-.8 p-1">
+  <select
+    class="rounded-xs border border-gray-300 focus:outline-blue-500 py-.2 px-.6"
+    [(ngModel)]="data.script.content"
+  >
+    @for (operator of optionsOperators; track operator) {
+    <option value="{{ operator._id }}">{{ operator.label }}</option>
+    }
+  </select>
+</div>

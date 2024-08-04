@@ -23,6 +23,7 @@ import { EndComponent } from './end/end.component';
 import { MessageComponent } from './message/message.component';
 import { AssistantComponent } from './assistant/assistant.component';
 import { TriggerComponent } from './assistant/trigger/trigger.component';
+import { GoToComponent } from './go-to/go-to.component';
 
 @Component({
   selector: 'app-operator',
@@ -36,6 +37,7 @@ import { TriggerComponent } from './assistant/trigger/trigger.component';
     OptionComponent,
     AssistantComponent,
     TriggerComponent,
+    GoToComponent,
     EndComponent,
     TitleCasePipe,
   ],

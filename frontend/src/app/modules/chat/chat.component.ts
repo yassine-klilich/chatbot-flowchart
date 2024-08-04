@@ -317,6 +317,20 @@ export class ChatComponent implements OnInit {
 
   continueConversation() {
     while (this.currentOperator != null) {
+      if (this.currentOperator.type == 'go-to') {
+        if (this.chatFlow) {
+          const operator = this.findOperatorById(
+            this.chatFlow,
+            this.currentOperator.script.content
+          );
+          if (operator) {
+            this.currentOperator = operator;
+            continue;
+          }
+        }
+        this.endConversation = true;
+        break;
+      }
       if (this.currentOperator.type == 'trigger') {
         this.nextOperator();
         continue;
