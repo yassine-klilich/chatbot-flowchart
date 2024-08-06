@@ -24,6 +24,8 @@
     <app-assistant #operator [data]="data" />
     }@case ('trigger') {
     <app-trigger #operator [data]="data" />
+    }@case ('contact-agent') {
+    <app-contact-agent #operator [data]="data" />
     }@case ('go-to') {
     <app-go-to #operator [data]="data" />
     }@case ('end') {

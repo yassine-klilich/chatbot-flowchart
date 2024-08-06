@@ -15,14 +15,47 @@ export class FlowchartService {
   changes: Subject<any> = new Subject();
   remove: Subject<any> = new Subject();
   readonly operatorTypes: Record<OperatorType, OperatorType[]> = {
-    message: ['message', 'collect', 'choice', 'assistant', 'go-to', 'end'],
-    collect: ['message', 'collect', 'choice', 'assistant', 'go-to', 'end'],
+    message: [
+      'message',
+      'collect',
+      'choice',
+      'assistant',
+      'contact-agent',
+      'go-to',
+      'end',
+    ],
+    collect: [
+      'message',
+      'collect',
+      'choice',
+      'assistant',
+      'contact-agent',
+      'go-to',
+      'end',
+    ],
     choice: [],
-    option: ['message', 'collect', 'choice', 'assistant', 'go-to', 'end'],
+    option: [
+      'message',
+      'collect',
+      'choice',
+      'assistant',
+      'contact-agent',
+      'go-to',
+      'end',
+    ],
     api: [],
     assistant: [],
-    trigger: ['message', 'collect', 'choice', 'assistant', 'go-to', 'end'],
+    trigger: [
+      'message',
+      'collect',
+      'choice',
+      'assistant',
+      'contact-agent',
+      'go-to',
+      'end',
+    ],
     'go-to': [],
+    'contact-agent': [],
     end: [],
   };
 

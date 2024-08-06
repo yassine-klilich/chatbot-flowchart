@@ -24,6 +24,7 @@ import { MessageComponent } from './message/message.component';
 import { AssistantComponent } from './assistant/assistant.component';
 import { TriggerComponent } from './assistant/trigger/trigger.component';
 import { GoToComponent } from './go-to/go-to.component';
+import { ContactAgentComponent } from './contact-agent/contact-agent.component';
 
 @Component({
   selector: 'app-operator',
@@ -38,6 +39,7 @@ import { GoToComponent } from './go-to/go-to.component';
     AssistantComponent,
     TriggerComponent,
     GoToComponent,
+    ContactAgentComponent,
     EndComponent,
     TitleCasePipe,
   ],
@@ -109,7 +111,7 @@ export class OperatorComponent implements AfterViewInit, OnDestroy {
 
       this.host.nativeElement.style.top = '48px';
       this.host.nativeElement.style.left =
-        (flowchartContainer?.offsetWidth || 2500) / 2 + 'px';
+        (flowchartContainer?.offsetWidth || 5000) / 2 + 'px';
     }
   }
 }

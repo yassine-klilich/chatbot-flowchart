@@ -27,4 +27,5 @@ export type OperatorType =
   | 'assistant'
   | 'trigger'
   | 'go-to'
+  | 'contact-agent'
   | 'end';

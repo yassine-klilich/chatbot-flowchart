@@ -37,6 +37,7 @@ export class ChatComponent implements OnInit {
   chatFlow?: ChatOperator;
   currentOperator?: ChatOperator;
   smartTriggers: SmartTrigger[] = [];
+  contactAgent: boolean = false;
 
   public get lastMessage(): string {
     return this.messageLog[this.messageLog.length - 1].message;
@@ -317,6 +318,10 @@ export class ChatComponent implements OnInit {
 
   continueConversation() {
     while (this.currentOperator != null) {
+      if (this.currentOperator.type == 'contact-agent') {
+        this.contactAgent = true;
+        break;
+      }
       if (this.currentOperator.type == 'go-to') {
         if (this.chatFlow) {
           const operator = this.findOperatorById(
